@@ -1,0 +1,19 @@
+app_home:
+    path:      /
+    defaults:
+       { _controller: AppBundle:Forum:index }
+
+app_compte:
+    path:      /compte/{id}
+    defaults:
+       { _controller: ForumBundle:Forum:compte }
+
+app_theme:
+    path:      /{theme}
+    defaults:
+       { _controller: ForumBundle:Forum:theme }
+
+app_discussion:
+    path:      /{theme}/{discussion}
+    defaults:
+       { _controller: ForumBundle:Forum:discussion }

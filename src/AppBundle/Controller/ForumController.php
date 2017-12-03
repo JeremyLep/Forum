@@ -17,4 +17,9 @@ class ForumController extends Controller
         return $this->render('AppBundle:Forum:index.html.twig');
     }
 
+    public function discussionAction()
+    {
+        return $this->render('AppBundle:Forum:discussion.html.twig');
+    }
+
 }

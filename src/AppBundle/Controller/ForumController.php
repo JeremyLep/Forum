@@ -21,5 +21,4 @@ class ForumController extends Controller
     {
         return $this->render('AppBundle:Forum:discussion.html.twig');
     }
-
 }

@@ -37,6 +37,13 @@ class Themes
     private $sousTitre;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="nb_discussion", type="integer", length=700, nullable=true)
+     */
+    private $nbDiscussion;
+
+    /**
      * @var \Discussion
      *
      * @ORM\OneToMany(targetEntity="Discussion", mappedBy="theme")
@@ -47,5 +54,31 @@ class Themes
     public function __construct()
     {
         $this->discussion = new ArrayCollection();
+    }
+
+    /**
+     * Add discussion
+     *
+     * @param \AppBundle\Entity\Discussion $discussion
+     *
+     * @return Fiche
+     */
+    public function addDiscussion(\AppBundle\Entity\Discussion $discussion)
+    {
+        $this->discussion[] = $discussion;
+        $this->nbDiscussion++;
+
+        return $this;
+    }
+
+    /**
+     * Remove discussion
+     *
+     * @param \AppBundle\Entity\Discussion $discussion
+     */
+    public function removeDiscussion(\AppBundle\Entity\Discussion $discussion)
+    {
+        $this->discussion->removeElement($discussion);
+        $this->nbDiscussion--;
     }
 }

@@ -28,8 +28,20 @@ class ForumController extends Controller
       ));
     }
 
-    public function discussionAction()
+    public function discussionAction($theme)
     {
-      return $this->render('AppBundle:Forum:discussion.html.twig');
+      $em          = $this->getDoctrine()->getManager();
+      $discussions = $em
+        ->getRepository('AppBundle:Discussion')
+        ->getDiscussions($theme);
+      $infosDisc   = $em
+        ->getRepository('AppBundle:Discussion')
+        ->getInfoCountDiscussions($theme);
+
+      return $this->render('AppBundle:Forum:discussion.html.twig', array(
+        'discussions' => $discussions,
+        'theme' => $theme,
+        'infosDisc'=> $infosDisc,
+      ));
     }
 }

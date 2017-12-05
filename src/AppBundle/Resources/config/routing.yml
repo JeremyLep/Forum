@@ -9,6 +9,6 @@ app_compte:
        { _controller: AppBundle:Forum:compte }
 
 app_discussion:
-    path:      /theme/{theme}
+    path:      /{theme}
     defaults:
        { _controller: AppBundle:Forum:discussion }

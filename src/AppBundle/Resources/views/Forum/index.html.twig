@@ -11,6 +11,7 @@
 </div>
 {% endblock %}
 
+
 {% block content %}
 <div class="ibox-content forum-container">
 	{% for theme in themes %}
@@ -20,13 +21,14 @@
 	            <div class="forum-icon">
 	                <i class="fa fa-shield"></i>
 	            </div>
-	            <a href="{{ path('app_discussion', {'theme': theme.titre}) }}" class="forum-item-title">{{ theme.titre }}</a>
-	            <div class="forum-sub-title">{{ theme.sous_titre }}</div>
+	            <a href="{{ path('app_discussion', {'theme': theme.titre, 'page': 1}) }}" class="forum-item-title">{{ theme.titre }}</a>
+	            <div class="forum-sub-title">{{ theme.sousTitre }}</div>
 	        </div>
 	        <div class="col-lg-1 col-md-1"></div>
+	        {% for discussion in theme.discussion %}
 	        <div class="col-lg-2 col-md-2 forum-info">
 	            <span class="views-number">
-	                {{ theme.pseudo }}
+	            	{{ discussion.auteur.pseudo}}	            	
 	            </span>
 	            <div>
 	                <small>Dernière auteur</small>
@@ -34,15 +36,16 @@
 	        </div>
 	        <div class="col-lg-2 col-md-2 forum-info">
 	            <span class="views-number">
-	                {{ theme.date|date('d-m-y') }}
+	                {{ discussion.date|date('d-m-Y') }}
 	            </span>
 	        	<div>
 	            	<small>Dernier post</small>
 	            </div>
 	        </div>
+			{% endfor %}
 	        <div class="col-lg-2 col-md-2 forum-info">
 	            <span class="views-number">
-	                {{ theme.nb_discussion}}
+	                {{ theme.nbDiscussion}}
 	            </span>
 	        	<div>
 	            	<small>Discussions</small>
@@ -52,4 +55,5 @@
 	</div>
 	{% endfor %}
 </div>
+
 {% endblock %}

@@ -53,7 +53,7 @@ class Themes
 
     public function __construct()
     {
-        $this->discussion = new ArrayCollection();
+        //$this->discussion = new ArrayCollection();
     }
 
     /**
@@ -80,5 +80,97 @@ class Themes
     {
         $this->discussion->removeElement($discussion);
         $this->nbDiscussion--;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set titre
+     *
+     * @param string $titre
+     *
+     * @return Themes
+     */
+    public function setTitre($titre)
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    /**
+     * Get titre
+     *
+     * @return string
+     */
+    public function getTitre()
+    {
+        return $this->titre;
+    }
+
+    /**
+     * Set sousTitre
+     *
+     * @param string $sousTitre
+     *
+     * @return Themes
+     */
+    public function setSousTitre($sousTitre)
+    {
+        $this->sousTitre = $sousTitre;
+
+        return $this;
+    }
+
+    /**
+     * Get sousTitre
+     *
+     * @return string
+     */
+    public function getSousTitre()
+    {
+        return $this->sousTitre;
+    }
+
+    /**
+     * Set nbDiscussion
+     *
+     * @param integer $nbDiscussion
+     *
+     * @return Themes
+     */
+    public function setNbDiscussion($nbDiscussion)
+    {
+        $this->nbDiscussion = $nbDiscussion;
+
+        return $this;
+    }
+
+    /**
+     * Get nbDiscussion
+     *
+     * @return integer
+     */
+    public function getNbDiscussion()
+    {
+        return $this->nbDiscussion;
+    }
+
+    /**
+     * Get discussion
+     *
+     * @return \Discussion
+     */
+    public function getDiscussion()
+    {
+        return $this->discussion;
     }
 }

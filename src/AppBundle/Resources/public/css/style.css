@@ -133,8 +133,44 @@ a.forum-item-title:hover {
   }
 }
 
+.p-10{
+  padding: 10px!important;
+}
 
 
+.pagination-item:hover, .pagination-item.active{
+    background-color: #1ab394;
+    border-right: 1px solid #fff;
+}
+
+.pagination-item{
+  list-style-type: none;
+  display: inline-block;
+  border-right: 1px solid #d7dadb;
+  transform: scale(1) rotate(19deg) translateX(0px) translateY(0px) skewX(-10deg) skewY(-20deg);
+}
+
+.pagination-link{
+  padding: 1.1em 1.6em;
+    display: inline-block;
+    text-decoration: none;
+    color: #8b969c;
+    transform: scale(1) rotate(0deg) translateX(0px) translateY(0px) skewX(20deg) skewY(0deg);
+}
+
+.pagination-link:hover, .pagination-item.active .pagination-link{
+  color: #fff!important;
+}
+
+.crumbread a{
+  color: #8b969c;
+  font-size: 15px;
+}
+
+.crumbread a:hover{
+  color: #000;
+  text-decoration: none;  
+}
 
 
 .ibox {

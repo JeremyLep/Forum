@@ -1,14 +1,21 @@
 app_home:
-    path:      /
+    path:      /{page}
     defaults:
-       { _controller: AppBundle:Forum:index }
+        _controller: AppBundle:Forum:index
+        page: 1
+    requirements:
+        page: '\d+'
 
 app_compte:
     path:      /compte/{id}
     defaults:
        { _controller: AppBundle:Forum:compte }
 
+
 app_discussion:
-    path:      /{theme}
+    path:      /{theme}/{page}
     defaults:
-       { _controller: AppBundle:Forum:discussion }
+       _controller: AppBundle:Forum:discussion
+       page: 1
+    requirements:
+        page: '\d+'

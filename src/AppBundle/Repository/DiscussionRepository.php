@@ -3,10 +3,28 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class DiscussionRepository extends EntityRepository
 {
-	public function getDiscussions($theme) {
+	public function getDiscussions($theme, $page, $nbPerPage) {
+
+		$query = $this->createQueryBuilder('d')
+	      ->innerJoin('d.theme', 't')
+	      ->where('t.titre = :theme')
+	      ->addSelect('t')
+	      ->innerJoin('d.auteur', 'm')
+	      ->addSelect('m')
+	      ->orderBy('d.date', 'ASC')
+	      ->setParameter('theme', $theme)
+	      ->getQuery();
+
+    	$query->setFirstResult(($page-1) * $nbPerPage)
+      	  	  ->setMaxResults($nbPerPage);
+
+    	return new Paginator($query, true);
+
+/*
 		$cnx = $this->getEntityManager()->getConnection();
 	    $query = <<<SQL
         	SELECT d.*, m.pseudo
@@ -21,6 +39,7 @@ SQL;
 		$query = str_replace(":theme", (string)$theme, $query);
 
 		return $cnx->fetchAll($query);
+*/
 	}
 
 	public function getNbDiscussion() {

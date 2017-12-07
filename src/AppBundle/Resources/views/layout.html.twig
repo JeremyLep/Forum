@@ -29,7 +29,7 @@
                         <div class="p-xs">
                             {% block title %}
                             <div class="pull-left m-r-md mr-5">
-                                <i class="fa fa-globe text-navy mid-icon"></i>
+                                <a href="{{ path('app_home') }}"><i class="fa fa-globe text-navy mid-icon"></i></a>
                             </div>
                             <h2> Bienvenue sur notre forum ! </h2>
                             <span> Choisissez le topic de votre choix.</span>
@@ -41,8 +41,22 @@
                     {% block subtitle %}
                     {% endblock %}
                     
-                    
+                    {% block crumbread %}
+                    {% endblock %}
+
+                    {% block paginator %}
+                    <div class="ibox-content mb-1 mt-1 p-0">
+                        {% include "AppBundle:Forum:paginator.html.twig" %}
+                    </div>
+                    {% endblock %}
+
                     {% block content %}
+                    {% endblock %}
+
+                    {% block paginatorBot %}
+                    <div class="ibox-content mb-1 mt-1 p-0">
+                        {% include "AppBundle:Forum:paginator.html.twig" %}
+                    </div>
                     {% endblock %}
                 </div>
             </div>

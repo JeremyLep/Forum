@@ -37,6 +37,13 @@ class Themes
     private $sousTitre;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="nb_discussion", type="integer", length=700, nullable=true)
+     */
+    private $nbDiscussion;
+
+    /**
      * @var \Discussion
      *
      * @ORM\OneToMany(targetEntity="Discussion", mappedBy="theme")
@@ -46,6 +53,124 @@ class Themes
 
     public function __construct()
     {
-        $this->discussion = new ArrayCollection();
+        //$this->discussion = new ArrayCollection();
+    }
+
+    /**
+     * Add discussion
+     *
+     * @param \AppBundle\Entity\Discussion $discussion
+     *
+     * @return Fiche
+     */
+    public function addDiscussion(\AppBundle\Entity\Discussion $discussion)
+    {
+        $this->discussion[] = $discussion;
+        $this->nbDiscussion++;
+
+        return $this;
+    }
+
+    /**
+     * Remove discussion
+     *
+     * @param \AppBundle\Entity\Discussion $discussion
+     */
+    public function removeDiscussion(\AppBundle\Entity\Discussion $discussion)
+    {
+        $this->discussion->removeElement($discussion);
+        $this->nbDiscussion--;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set titre
+     *
+     * @param string $titre
+     *
+     * @return Themes
+     */
+    public function setTitre($titre)
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    /**
+     * Get titre
+     *
+     * @return string
+     */
+    public function getTitre()
+    {
+        return $this->titre;
+    }
+
+    /**
+     * Set sousTitre
+     *
+     * @param string $sousTitre
+     *
+     * @return Themes
+     */
+    public function setSousTitre($sousTitre)
+    {
+        $this->sousTitre = $sousTitre;
+
+        return $this;
+    }
+
+    /**
+     * Get sousTitre
+     *
+     * @return string
+     */
+    public function getSousTitre()
+    {
+        return $this->sousTitre;
+    }
+
+    /**
+     * Set nbDiscussion
+     *
+     * @param integer $nbDiscussion
+     *
+     * @return Themes
+     */
+    public function setNbDiscussion($nbDiscussion)
+    {
+        $this->nbDiscussion = $nbDiscussion;
+
+        return $this;
+    }
+
+    /**
+     * Get nbDiscussion
+     *
+     * @return integer
+     */
+    public function getNbDiscussion()
+    {
+        return $this->nbDiscussion;
+    }
+
+    /**
+     * Get discussion
+     *
+     * @return \Discussion
+     */
+    public function getDiscussion()
+    {
+        return $this->discussion;
     }
 }

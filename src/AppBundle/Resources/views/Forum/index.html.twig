@@ -4,318 +4,56 @@
 <div class="ibox-content p-3">
     <div class="forum-title">
         <div class="pull-right forum-desc">
-            <samll>Postes total: 2,150</samll>
+            <samll>Postes total: {{ nbDisc }}</samll>
         </div>
         <h3>Thèmes</h3>
     </div>
 </div>
 {% endblock %}
 
+
 {% block content %}
 <div class="ibox-content forum-container">
-{# foreach theme in themes #}
-<div class="forum-item active">
-    <div class="row">
-        <div class="col-lg-5 col-md-5">
-            <div class="forum-icon">
-                <i class="fa fa-shield"></i>
-            </div>
-            <a href="./discussion.html.twig" class="forum-item-title">Discussion général</a>
-            <div class="forum-sub-title">Discuter à propos de sport, musique, cinéma, jeux de société ou de tout ce que vous souhaitez.</div>
-        </div>
-        <div class="col-lg-1 col-md-1"></div>
-        <div class="col-lg-2 col-md-2 forum-info">
-            <span class="views-number">
-                John Doe
-            </span>
-            <div>
-                <small>Dernière auteur</small>
-            </div>
-        </div>
-        <div class="col-lg-2 col-md-2 forum-info">
-            <span class="views-number">
-                11-12-2017
-            </span>
-        	<div>
-            	<small>Dernier post</small>
-            </div>
-        </div>
-        <div class="col-lg-2 col-md-2 forum-info">
-            <span class="views-number">
-                140
-            </span>
-        	<div>
-            	<small>Discussions</small>
-        	</div>
-        </div>
-    </div>
-</div>
-{# endfor #}
-
-
-
-                  <div class="forum-item">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="forum-icon">
-                                <i class="fa fa-bolt"></i>
-                            </div>
-                            <a href="" class="forum-item-title">Introductions</a>
-                            <div class="forum-sub-title">New to the community? Please stop by, say hi and tell us a bit about yourself. </div>
-                        </div>
-                        <div class="col-lg-1 col-md-1"></div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                John Doe
-                            </span>
-                            <div>
-                                <small>Dernière auteur</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number font14">
-                                11-12-2017
-                            </span>
-                            <div>
-                                <small>Dernier post</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                140
-                            </span>
-                            <div>
-                                <small>Discussions</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="forum-item active">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="forum-icon">
-                                <i class="fa fa-calendar"></i>
-                            </div>
-                            <a href="" class="forum-item-title">Announcements</a>
-                            <div class="forum-sub-title">This forum features announcements from the community staff. If there is a new post in this forum, please check it out. </div>
-                        </div>
-                        <div class="col-lg-1 col-md-1"></div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                John Doe
-                            </span>
-                            <div>
-                                <small>Dernière auteur</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number font14">
-                                11-12-2017
-                            </span>
-                            <div>
-                                <small>Dernier post</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                140
-                            </span>
-                            <div>
-                                <small>Discussions</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="forum-item">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="forum-icon">
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <a href="" class="forum-item-title">Staff Discussion</a>
-                            <div class="forum-sub-title">This forum is for private, staff member only discussions, usually pertaining to the community itself. </div>
-                        </div>
-                        <div class="col-lg-1 col-md-1"></div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                John Doe
-                            </span>
-                            <div>
-                                <small>Dernière auteur</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number font14">
-                                11-12-2017
-                            </span>
-                            <div>
-                                <small>Dernier post</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                140
-                            </span>
-                            <div>
-                                <small>Discussions</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="forum-item">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="forum-icon">
-                                <i class="fa fa-clock-o"></i>
-                            </div>
-                            <a href="" class="forum-item-title">Lorem Ipsum is simply dummy text. </a>
-                            <div class="forum-sub-title">Various versions have evolved over the years, sometimes by accident, sometimes on purpose passage of Lorem Ipsum (injected humour and the like).</div>
-                        </div>
-                        <div class="col-lg-1 col-md-1"></div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                John Doe
-                            </span>
-                            <div>
-                                <small>Dernière auteur</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number font14">
-                                11-12-2017
-                            </span>
-                            <div>
-                                <small>Dernier post</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                140
-                            </span>
-                            <div>
-                                <small>Discussions</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {#
-                <div class="forum-item">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="forum-icon">
-                                <i class="fa fa-bomb"></i>
-                            </div>
-                            <a href="" class="forum-item-title">There are many variations of passages</a>
-                            <div class="forum-sub-title"> If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the . </div>
-                        </div>
-                        <div class="col-lg-1 col-md-1"></div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                John Doe
-                            </span>
-                            <div>
-                                <small>Dernière auteur</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number font14">
-                                11-12-2017
-                            </span>
-                            <div>
-                                <small>Dernier post</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                140
-                            </span>
-                            <div>
-                                <small>Discussions</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="forum-item">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="forum-icon">
-                                <i class="fa fa-bookmark"></i>
-                            </div>
-                            <a href="" class="forum-item-title">The standard chunk of Lorem Ipsum</a>
-                            <div class="forum-sub-title">Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.</div>
-                        </div>
-                        <div class="col-lg-1 col-md-1"></div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                John Doe
-                            </span>
-                            <div>
-                                <small>Dernière auteur</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number font14">
-                                11-12-2017
-                            </span>
-                            <div>
-                                <small>Dernier post</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                140
-                            </span>
-                            <div>
-                                <small>Discussions</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="forum-item">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="forum-icon">
-                                <i class="fa fa-ambulance"></i>
-                            </div>
-                            <a href="" class="forum-item-title">Lorem Ipsum, you need to be sure there</a>
-                            <div class="forum-sub-title">Internet tend to repeat predefined chunks as necessary, making this the</div>
-                        </div>
-                        <div class="col-lg-1 col-md-1"></div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                John Doe
-                            </span>
-                            <div>
-                                <small>Dernière auteur</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number font14">
-                                11-12-2017
-                            </span>
-                            <div>
-                                <small>Dernier post</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 forum-info">
-                            <span class="views-number">
-                                140
-                            </span>
-                            <div>
-                                <small>Discussions</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>#}
-
-
-
-
-
+	{% for theme in themes %}
+	<div class="forum-item active">
+	    <div class="row">
+	        <div class="col-lg-5 col-md-5">
+	            <div class="forum-icon">
+	                <i class="fa fa-shield"></i>
+	            </div>
+	            <a href="{{ path('app_discussion', {'theme': theme.titre, 'page': 1}) }}" class="forum-item-title">{{ theme.titre }}</a>
+	            <div class="forum-sub-title">{{ theme.sousTitre }}</div>
+	        </div>
+	        <div class="col-lg-1 col-md-1"></div>
+	        {% for discussion in theme.discussion %}
+	        <div class="col-lg-2 col-md-2 forum-info">
+	            <span class="views-number">
+	            	{{ discussion.auteur.pseudo}}	            	
+	            </span>
+	            <div>
+	                <small>Dernière auteur</small>
+	            </div>
+	        </div>
+	        <div class="col-lg-2 col-md-2 forum-info">
+	            <span class="views-number">
+	                {{ discussion.date|date('d-m-Y') }}
+	            </span>
+	        	<div>
+	            	<small>Dernier post</small>
+	            </div>
+	        </div>
+			{% endfor %}
+	        <div class="col-lg-2 col-md-2 forum-info">
+	            <span class="views-number">
+	                {{ theme.nbDiscussion}}
+	            </span>
+	        	<div>
+	            	<small>Discussions</small>
+	        	</div>
+	        </div>
+	    </div>
+	</div>
+	{% endfor %}
 </div>
 
-                {% endblock %}
-
-
-{# endblock #}
+{% endblock %}

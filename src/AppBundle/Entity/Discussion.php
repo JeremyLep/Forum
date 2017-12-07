@@ -38,7 +38,7 @@ class Discussion
     /**
      * @var \Membres
      *
-     * @ORM\ManyToOne(targetEntity="Membres", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Membres", inversedBy="discussion")
      *
      */
     private $auteur;
@@ -51,4 +51,110 @@ class Discussion
      *
      */
     private $theme;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Discussion
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set contenu
+     *
+     * @param string $contenu
+     *
+     * @return Discussion
+     */
+    public function setContenu($contenu)
+    {
+        $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    /**
+     * Get contenu
+     *
+     * @return string
+     */
+    public function getContenu()
+    {
+        return $this->contenu;
+    }
+
+    /**
+     * Set auteur
+     *
+     * @param \AppBundle\Entity\Membres $auteur
+     *
+     * @return Discussion
+     */
+    public function setAuteur(\AppBundle\Entity\Membres $auteur)
+    {
+        $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    /**
+     * Get auteur
+     *
+     * @return \AppBundle\Entity\Membres
+     */
+    public function getAuteur()
+    {
+        return $this->auteur;
+    }
+
+    /**
+     * Set theme
+     *
+     * @param \AppBundle\Entity\Themes $theme
+     *
+     * @return Discussion
+     */
+    public function setTheme(\AppBundle\Entity\Themes $theme)
+    {
+        $this->theme = $theme;
+
+        return $this;
+    }
+
+    /**
+     * Get theme
+     *
+     * @return \AppBundle\Entity\Themes
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
 }

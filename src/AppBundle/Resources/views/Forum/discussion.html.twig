@@ -2,15 +2,21 @@
 
 {% block title %}
 <div class="pull-left m-r-md mr-5">
-    <i class="fa fa-shield text-navy mid-icon"></i>
+    <a href="{{ path('app_home') }}"><i class="fa fa-shield text-navy mid-icon"></i></a>
 </div>
-<h2> Discussion général</h2>
-<small class="forum-desc"> 15 discussions - 6 participents</small>
+<h2> {{ theme }}</h2>
+<small class="forum-desc"> {{ infosDisc[0]['nb_discussion'] }} posts - {{ infosDisc[0]['COUNT(distinct d.auteur_id)'] }} participents</small>
 {% endblock %}
 
-{% block content %}
-{# foreach discussion in discussions#}
+{% block crumbread %}
+<div class="ibox-content mb-1 mt-1 p-10">
+	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> / <a href="{{ path(app.request.get('_route'), {'page': 1, 'theme': theme}) }}"> {{ theme }}</a></p>
+</div>
+{% endblock %}
 
+
+{% block content %}
+{% for discussion in discussions %}
 <div class="ibox-content forum-container mb-2">
 <div class="col-12">
 	<div class="row pb-3" style="border-bottom: 0.0625rem dotted #C6C6D0;">
@@ -19,42 +25,19 @@
 		</div>
 		<div class="col-11">
 			<div class="row">
-				<h5>John Doe</h5>
+				<h5>{{ discussion.auteur.pseudo }}</h5>
 			</div>
 			<div class="row">
-				<small class="forum-desc">03 décemebre 2017</small>
+				<small class="forum-desc">{{ discussion.date|date() }}</small>
 			</div>
 		</div>
 	</div>
 	<div class="row pt-3">
 		<div class="col-12">
-			<h6>Sed quis luctus nibh. Etiam lacinia eros ante, a faucibus ligula pretium in. Maecenas euismod fringilla libero sit amet venenatis. Vivamus eget erat non justo elementum venenatis non aliquet metus. Mauris nec rutrum ligula, id luctus enim. Vestibulum vel commodo nulla. Donec quis diam vitae metus auctor aliquet. Vestibulum ullamcorper diam id consequat mattis.</h6>
+			<h6>{{ discussion.contenu }}</h6>
 		</div>
 	</div>
 </div>
 </div>
-{# endfor #}
-
-<div class="ibox-content forum-container">
-<div class="col-12" bg-color="#e3e3e3">
-	<div class="row pb-3" style="border-bottom: 0.0625rem dotted #C6C6D0;">
-		<div class="col-1">
-			<img src="{{  asset('bundles/app/images/defaut.png') }}" style="max-width: 40px; max-height: 40px;">
-		</div>
-		<div class="col-11">
-			<div class="row">
-				<h5>John Doe</h5>
-			</div>
-			<div class="row">
-				<small class="forum-desc">03 décemebre 2017</small>
-			</div>
-		</div>
-	</div>
-	<div class="row pt-3">
-		<div class="col-12">
-			<h6>Sed quis luctus nibh. Etiam lacinia eros ante, a faucibus ligula pretium in. Maecenas euismod fringilla libero sit amet venenatis. Vivamus eget erat non justo elementum venenatis non aliquet metus. Mauris nec rutrum ligula, id luctus enim. Vestibulum vel commodo nulla. Donec quis diam vitae metus auctor aliquet. Vestibulum ullamcorper diam id consequat mattis.</h6>
-		</div>
-	</div>
-</div>
-</div>
+{% endfor %}
 {% endblock %}

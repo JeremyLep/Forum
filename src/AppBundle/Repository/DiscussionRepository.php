@@ -63,4 +63,32 @@ SQL;
 		$query = str_replace(':theme', (string)$theme, $query);
 		return $cnx->fetchAll($query);
 	}
+
+	public function getStatProfil($id) {
+
+		$cnx = $this->getEntityManager()->getConnection();
+	    $query = <<<SQL
+        	SELECT COUNT(d.id), COUNT(distinct d.theme_id)
+			FROM discussion d
+			WHERE d.auteur_id = ':id'
+SQL;
+		$query = str_replace(':id', $id, $query);
+		return $cnx->fetchAll($query);
+	}
+
+	public function getStatSite() {
+
+		$cnx = $this->getEntityManager()->getConnection();
+	    $query = <<<SQL
+        	SELECT COUNT(d.id), COUNT(distinct d.theme_id)
+			FROM discussion d
+SQL;
+		return $cnx->fetchAll($query);
+	}
+	   /*   
+	   Total messages postés
+      Pourcentage msg = total msg / msg posté
+      theme participé
+      % participation dans theme = total theme / theme participé
+      Msg par jours = date_inscription->nbJours / msg posté*/
 }

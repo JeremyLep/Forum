@@ -6,10 +6,12 @@ app_home:
     requirements:
         page: '\d+'
 
-app_compte:
-    path:      /compte/{id}
+app_profil:
+    path:      /profil/{id}
     defaults:
-       { _controller: AppBundle:Forum:compte }
+        _controller: AppBundle:Forum:profil
+    requirements:
+        page: '\d+'
 
 
 app_discussion:

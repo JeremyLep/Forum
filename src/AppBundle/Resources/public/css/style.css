@@ -1,12 +1,50 @@
 
 body{margin-top:20px;
-background:#eee;
+background:#e2e4e5;
 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 color: #7a7a7a;
 }
 
-a{
+a, a:hover{
   text-decoration: none;
+  color: inherit;
+}
+
+.btn-primary{
+  background-color: #1ab394!important;
+  border-color: #1ab394!important;
+}
+
+.btn-primary:hover{
+  background-color: #16987e!important;
+  border-color: #16987e!important;
+}
+
+.avatar-disc{
+  max-width: 50px; 
+  max-height: 50px;
+}
+
+@media screen and (max-width: 992px){
+  .avatar-disc{
+    max-width: 40px; 
+    max-height: 40px;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .avatar-disc{
+    max-width: 25px; 
+    max-height: 25px;
+  }
+}
+
+.profil tr td{
+  border: 0!important;
+}
+
+#profil{
+  margin-left: 10%;
 }
 
 .white-bg {
@@ -172,6 +210,14 @@ a.forum-item-title:hover {
   text-decoration: none;  
 }
 
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: #1ab394!important;
+    border-radius: 0!important;
+}
+
+.nav-link, .nav-link:hover{
+  color: #1ab394;
+}
 
 .ibox {
   clear: both;

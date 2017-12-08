@@ -17,16 +17,16 @@
 	{% for theme in themes %}
 	<div class="forum-item active">
 	    <div class="row">
-	        <div class="col-lg-5 col-md-5">
+	        <div class="col-lg-5 col-md-5 col-sm-5">
 	            <div class="forum-icon">
 	                <i class="fa fa-shield"></i>
 	            </div>
 	            <a href="{{ path('app_discussion', {'theme': theme.titre, 'page': 1}) }}" class="forum-item-title">{{ theme.titre }}</a>
 	            <div class="forum-sub-title">{{ theme.sousTitre }}</div>
 	        </div>
-	        <div class="col-lg-1 col-md-1"></div>
+	        <div class="col-lg-1 col-md-1 col-sm-1"></div>
 	        {% for discussion in theme.discussion %}
-	        <div class="col-lg-2 col-md-2 forum-info">
+	        <div class="col-lg-2 col-md-2 col-sm-2 forum-info">
 	            <span class="views-number">
 	            	{{ discussion.auteur.pseudo}}	            	
 	            </span>
@@ -34,7 +34,7 @@
 	                <small>Dernière auteur</small>
 	            </div>
 	        </div>
-	        <div class="col-lg-2 col-md-2 forum-info">
+	        <div class="col-lg-2 col-md-2 col-sm-2 forum-info">
 	            <span class="views-number">
 	                {{ discussion.date|date('d-m-Y') }}
 	            </span>
@@ -43,7 +43,7 @@
 	            </div>
 	        </div>
 			{% endfor %}
-	        <div class="col-lg-2 col-md-2 forum-info">
+	        <div class="col-lg-2 col-md-2 col-sm-2 forum-info">
 	            <span class="views-number">
 	                {{ theme.nbDiscussion}}
 	            </span>

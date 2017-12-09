@@ -1,0 +1,17 @@
+{{ form_start(formAdd, {'attr': {'class': 'form-horizontal'}}) }}
+
+	{{ form_errors(formAdd) }}
+
+	<div class="form-group col-lg-12 m-0">
+		{{ form_label(formAdd.discussion, "Ajouter un post", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+		{{ form_errors(formAdd.discussion) }}
+		<div class="col-sm-12">
+		  	{{ form_widget(formAdd.discussion, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-lg-12 p-2">
+			{{ form_widget(formAdd.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+		</div>
+	</div>
+	{{ form_rest(formAdd) }}
+		  
+{{ form_end(formAdd) }}

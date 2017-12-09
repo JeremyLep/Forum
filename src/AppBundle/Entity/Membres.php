@@ -57,6 +57,20 @@ class Membres
     private $prenom;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="avatar", type="string", nullable=true)
+     */
+    private $avatar;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_inscription", type="datetime", nullable=false)
+     */
+    private $dateInscription;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="age", type="integer", nullable=true)
@@ -91,6 +105,11 @@ class Membres
      *
      */
     protected $discussion;
+
+    public function __construct()
+    {
+        $this->dateInscription = new \DateTime;
+    }
 
     /**
      * Get id
@@ -223,6 +242,30 @@ class Membres
     }
 
     /**
+     * Set dateInscription
+     *
+     * @param \DateTime $dateInscription
+     *
+     * @return Membres
+     */
+    public function setDateInscription($dateInscription)
+    {
+        $this->dateInscription = $dateInscription;
+
+        return $this;
+    }
+
+    /**
+     * Get dateInscription
+     *
+     * @return \DateTime
+     */
+    public function getDateInscription()
+    {
+        return $this->dateInscription;
+    }
+
+    /**
      * Set age
      *
      * @param integer $age
@@ -268,6 +311,30 @@ class Membres
     public function getTel()
     {
         return $this->tel;
+    }
+
+    /**
+     * Set avatar
+     *
+     * @param string $avatar
+     *
+     * @return Membres
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar
+     *
+     * @return string
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
     }
 
     /**

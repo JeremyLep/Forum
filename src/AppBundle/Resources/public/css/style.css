@@ -1,12 +1,53 @@
 
-body{margin-top:20px;
-background:#eee;
+body{background:#e2e4e5;
 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 color: #7a7a7a;
 }
 
-a{
+a, a:hover{
   text-decoration: none;
+  color: inherit;
+}
+
+.container{
+  margin-top:20px;
+}
+
+.btn-primary{
+  background-color: #1ab394!important;
+  border-color: #1ab394!important;
+}
+
+.btn-primary:hover{
+  background-color: #16987e!important;
+  border-color: #16987e!important;
+}
+
+.avatar-disc{
+  max-width: 50px; 
+  max-height: 50px;
+}
+
+@media screen and (max-width: 992px){
+  .avatar-disc{
+    max-width: 35px; 
+    max-height: 35px;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .avatar-disc{
+    max-width: 25px; 
+    max-height: 25px;
+  }
+}
+
+.profil tr td{
+  border: 0!important;
+}
+
+#profil{
+  margin-left: 10%;
 }
 
 .white-bg {
@@ -122,7 +163,7 @@ a.forum-item-title:hover {
 .forum-item.active a.forum-item-title {
   color: #1ab394;
 }
-@media (max-width: 992px) {
+@media (max-width: 576px) {
   .forum-info {
     margin: 15px 0 10px 0;
     /* Comment this is you want to show forum info in small devices */
@@ -172,6 +213,14 @@ a.forum-item-title:hover {
   text-decoration: none;  
 }
 
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: #1ab394!important;
+    border-radius: 0!important;
+}
+
+.nav-link, .nav-link:hover{
+  color: #1ab394;
+}
 
 .ibox {
   clear: both;
@@ -217,11 +266,12 @@ a.forum-item-title:hover {
   border-width: 1px 0;
 }
 .ibox-footer {
-  color: inherit;
+  color: white;
   border-top: 1px solid #e7eaec;
   font-size: 90%;
-  background: #ffffff;
+  background: #758186;
   padding: 10px 15px;
+  font-size: 0.8rem;
 }
 
 .message-input {

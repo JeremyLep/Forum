@@ -1,0 +1,152 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block flashbag %}
+	{% for message in app.session.flashbag.get('success') %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        	<span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% block title %}
+<div class="pull-left m-r-md mr-5">
+    <a href="{{ path(app.request.get('_route'), {'id': id}) }}"><img height="45" width="45" src="{{ asset('bundles/app/images/' ~ profil.avatar ) }}"></a>
+</div>
+<h2>Profil {{ profil.pseudo }}</h2>
+{% endblock %}
+
+{% block breadcrum %}
+<div class="ibox-content mb-1 mt-1 p-10">
+	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path(app.request.get('_route'), {'id': id}) }}"> {{ profil.pseudo }}</a></p>
+</div>
+{% endblock %}
+
+{% block tabs %}
+<div class="ibox-content p-0">
+	<ul class="nav nav-pills nav-justified nav-fill">
+		<li role="profil" class="nav-item">
+			<a class="active nav-link" href="#profil" data-toggle="tab">Profil</a>
+		</li>
+		<li role="statistique" class="nav-item">
+			<a class="nav-link" href="#statistique" data-toggle="tab">Statistiques</a>
+		</li>
+		<li role="contact" class="nav-item">
+			<a class="nav-link" href="#contact" data-toggle="tab">Contact</a>
+		</li>
+	</ul>
+</div>
+{% endblock %}
+
+{% block paginator %}
+{% endblock %}
+
+{% block content %}
+<div class="ibox-content forum-container">
+	<div class="tab-content clearfix">
+
+		<div class="tab-pane active ml-10" id="profil">
+          <table class="table">
+			  <tbody class="profil">
+			    <tr>
+			      <td>Nom </td>
+			      <td>{{ profil.nom }} </td>
+			    </tr>
+			    <tr>
+			      <td>Prénom</td>
+			      <td>{{ profil.prenom }}</td>
+			    </tr>
+			    <tr>
+			      <td>Adresse Email</td>
+			      <td>{{ profil.email }}</td>
+			    </tr>
+			    <tr>
+			      <td>Pseudo</td>
+			      <td>{{ profil.pseudo }}</td>
+			    </tr>
+			    <tr>
+			      <td>Age</td>
+			      <td>{{ profil.age }}</td>
+			    </tr>
+			    <tr>
+			      <td>Téléphone</td>
+			      <td>{{ profil.tel }}</td>
+			    </tr>
+			    <tr>
+			      <td>Ville</td>
+			      <td>{{ profil.ville }}</td>
+			    </tr>
+			    <tr>
+			      <td>Date d'inscription</td>
+			      <td>{{ profil.dateInscription|date }}</td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+
+		<div class="tab-pane" id="statistique">
+			<table class="table">
+			  <tbody class="profil">
+			    <tr>
+			      <td>Total des messages postés par {{ profil.pseudo }}</td>
+			      <td>{{ maxItemP['disc'] }} </td>
+			    </tr>
+			    <tr>
+			      <td>Pourcentage des messages envoyés sur le site / messages totals</td>
+			      <td>{{ pourcentDisc|round(2, 'floor') }} %</td>
+			    </tr>
+			    <tr>
+			      <td>Nombre de thèmes abordés</td>
+			      <td>{{ maxItemP['theme'] }}</td>
+			    </tr>
+			    <tr>
+			      <td>Pourcentage des thèmes abordés / thèmes totals</td>
+			      <td>{{ pourcentTheme|round(2, 'floor') }} %</td>
+			    </tr>
+			    <tr>
+			      <td>Nombre de message moyen par jour</td>
+			      <td>{{ days|round(2, 'floor') }}</td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+
+		<div class="tab-pane" id="contact">
+
+			{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+		    {{ form_errors(form) }}
+
+		    <div class="form-group">
+		      {{ form_label(form.sujet, "Sujet de l'email", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+		      {{ form_errors(form.sujet) }}
+		      <div class="col-sm-12">
+		        {{ form_widget(form.sujet, {'attr': {'class': 'form-control'}}) }}
+		      </div>
+		    </div>
+
+		    <div class="form-group">
+		      {{ form_label(form.contenu, "Contenu de l'email", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+		      {{ form_errors(form.contenu) }}
+		      <div class="col-sm-12">
+		        {{ form_widget(form.contenu, {'attr': {'class': 'form-control'}}) }}
+		      </div>
+		    </div>
+
+			{{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+
+		    {{ form_rest(form) }}
+		  
+		    {{ form_end(form) }}
+
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}
+
+{% block paginatorBot %}
+{% endblock %}

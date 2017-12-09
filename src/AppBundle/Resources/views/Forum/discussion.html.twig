@@ -8,9 +8,9 @@
 <small class="forum-desc"> {{ infosDisc[0]['nb_discussion'] }} posts - {{ infosDisc[0]['COUNT(distinct d.auteur_id)'] }} participents</small>
 {% endblock %}
 
-{% block crumbread %}
+{% block breadcrum %}
 <div class="ibox-content mb-1 mt-1 p-10">
-	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> / <a href="{{ path(app.request.get('_route'), {'page': 1, 'theme': theme}) }}"> {{ theme }}</a></p>
+	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path(app.request.get('_route'), {'page': 1, 'theme': theme}) }}"> {{ theme }}</a></p>
 </div>
 {% endblock %}
 
@@ -20,12 +20,12 @@
 <div class="ibox-content forum-container mb-2">
 <div class="col-12">
 	<div class="row pb-3" style="border-bottom: 0.0625rem dotted #C6C6D0;">
-		<div class="col-1">
-			<img src="{{  asset('bundles/app/images/defaut.png') }}" style="max-width: 40px; max-height: 40px;">
+		<div class="col-1 pl-0">
+			<img src="{{  asset('bundles/app/images/defaut.png') }}" class="avatar-disc">
 		</div>
 		<div class="col-11">
 			<div class="row">
-				<h5>{{ discussion.auteur.pseudo }}</h5>
+				<h5><a href="{{ path('app_profil', {'id': discussion.auteur.id}) }}">{{ discussion.auteur.pseudo }}</a></h5>
 			</div>
 			<div class="row">
 				<small class="forum-desc">{{ discussion.date|date() }}</small>

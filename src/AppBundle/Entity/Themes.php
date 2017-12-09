@@ -53,7 +53,7 @@ class Themes
 
     public function __construct()
     {
-        //$this->discussion = new ArrayCollection();
+        $this->discussion = new ArrayCollection();
     }
 
     /**

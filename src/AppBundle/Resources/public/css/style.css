@@ -1,6 +1,5 @@
 
-body{margin-top:20px;
-background:#e2e4e5;
+body{background:#e2e4e5;
 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 color: #7a7a7a;
 }
@@ -8,6 +7,10 @@ color: #7a7a7a;
 a, a:hover{
   text-decoration: none;
   color: inherit;
+}
+
+.container{
+  margin-top:20px;
 }
 
 .btn-primary{
@@ -27,8 +30,8 @@ a, a:hover{
 
 @media screen and (max-width: 992px){
   .avatar-disc{
-    max-width: 40px; 
-    max-height: 40px;
+    max-width: 35px; 
+    max-height: 35px;
   }
 }
 
@@ -160,7 +163,7 @@ a.forum-item-title:hover {
 .forum-item.active a.forum-item-title {
   color: #1ab394;
 }
-@media (max-width: 992px) {
+@media (max-width: 576px) {
   .forum-info {
     margin: 15px 0 10px 0;
     /* Comment this is you want to show forum info in small devices */
@@ -263,11 +266,12 @@ a.forum-item-title:hover {
   border-width: 1px 0;
 }
 .ibox-footer {
-  color: inherit;
+  color: white;
   border-top: 1px solid #e7eaec;
   font-size: 90%;
-  background: #ffffff;
+  background: #758186;
   padding: 10px 15px;
+  font-size: 0.8rem;
 }
 
 .message-input {

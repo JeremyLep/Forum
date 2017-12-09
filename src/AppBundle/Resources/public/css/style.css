@@ -203,6 +203,10 @@ a.forum-item-title:hover {
   color: #fff!important;
 }
 
+.addPost{
+  padding: 0.2rem;
+}
+
 .crumbread a{
   color: #8b969c;
   font-size: 15px;

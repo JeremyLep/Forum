@@ -1,16 +1,28 @@
 {% extends "AppBundle::layout.html.twig" %}
 
+{% block flashbag %}
+	{% for message in app.session.flashbag.get('notice') %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        	<span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endblock %}
+
 {% block title %}
 <div class="pull-left m-r-md mr-5">
     <a href="{{ path('app_home') }}"><i class="fa fa-shield text-navy mid-icon"></i></a>
 </div>
-<h2> {{ theme }}</h2>
+<h2> {{ theme.titre }}</h2>
 <small class="forum-desc"> {{ infosDisc[0]['nb_discussion'] }} posts - {{ infosDisc[0]['COUNT(distinct d.auteur_id)'] }} participents</small>
 {% endblock %}
 
 {% block breadcrum %}
 <div class="ibox-content mb-1 mt-1 p-10">
-	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path(app.request.get('_route'), {'page': 1, 'theme': theme}) }}"> {{ theme }}</a></p>
+	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path(app.request.get('_route'), {'page': 1, 'theme': theme.titre}) }}"> {{ theme.titre }}</a><a class="text-white addPost float-right btn btn-primary" href="#post">Ajouter un post</a></p>
+	
 </div>
 {% endblock %}
 
@@ -40,4 +52,7 @@
 </div>
 </div>
 {% endfor %}
+<div class="ibox-content p-2" id="post">
+	{% include "AppBundle:Forum:Form/addDiscussionForm.html.twig" %}
+</div>
 {% endblock %}

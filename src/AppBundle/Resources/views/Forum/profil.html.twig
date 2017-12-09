@@ -48,7 +48,8 @@
 	<div class="tab-content clearfix">
 
 		<div class="tab-pane active ml-10" id="profil">
-          <table class="table">
+			<h4 class="pb-3">Informations de {{ profil.pseudo }}</h4>
+          	<table class="table">
 			  <tbody class="profil">
 			    <tr>
 			      <td>Nom </td>
@@ -87,6 +88,7 @@
 		</div>
 
 		<div class="tab-pane" id="statistique">
+			<h4 class="pb-3">Statistiques de {{ profil.pseudo }}</h4>
 			<table class="table">
 			  <tbody class="profil">
 			    <tr>
@@ -114,34 +116,8 @@
 		</div>
 
 		<div class="tab-pane" id="contact">
-
-			{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-
-		    {{ form_errors(form) }}
-
-		    <div class="form-group">
-		      {{ form_label(form.sujet, "Sujet de l'email", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-		      {{ form_errors(form.sujet) }}
-		      <div class="col-sm-12">
-		        {{ form_widget(form.sujet, {'attr': {'class': 'form-control'}}) }}
-		      </div>
-		    </div>
-
-		    <div class="form-group">
-		      {{ form_label(form.contenu, "Contenu de l'email", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-		      {{ form_errors(form.contenu) }}
-		      <div class="col-sm-12">
-		        {{ form_widget(form.contenu, {'attr': {'class': 'form-control'}}) }}
-		      </div>
-		    </div>
-
-			{{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
-
-		    {{ form_rest(form) }}
-		  
-		    {{ form_end(form) }}
-
-
+			<h4 class="pb-3">Envoyer un mail à {{ profil.pseudo }}</h4>
+			{% include "AppBundle:Forum:Form/profilForm.html.twig" %}
 		</div>
 
 	</div>

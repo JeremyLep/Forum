@@ -1,0 +1,32 @@
+<div class="modal" tabindex="-1" role="dialog" id="addtheme">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      {{ form_start(formAdd, {'attr': {'class': 'form-horizontal'}}) }}
+      {{ form_errors(formAdd) }}
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter un thème</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ form_label(formAdd.titre, "Ajouter un titre", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+        {{ form_errors(formAdd.titre) }}
+        <div class="col-sm-12">
+            {{ form_widget(formAdd.titre, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {{ form_label(formAdd.soustitre, "Ajouter un sous-titre", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+        {{ form_errors(formAdd.soustitre) }}
+        <div class="col-sm-12">
+            {{ form_widget(formAdd.soustitre, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        {{ form_widget(formAdd.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      {{ form_rest(formAdd) }}
+      {{ form_end(formAdd) }}
+    </div>
+  </div>
+</div>

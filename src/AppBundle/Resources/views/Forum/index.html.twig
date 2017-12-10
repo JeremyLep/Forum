@@ -1,5 +1,16 @@
 {% extends "AppBundle::layout.html.twig" %}
 
+{% block flashbag %}
+	{% for message in app.session.flashbag.get('notice') %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        	<span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endblock %}
+
 {% block subtitle %}
 <div class="ibox-content p-3">
     <div class="forum-title">
@@ -9,10 +20,13 @@
         <h3>Thèmes</h3>
     </div>
 </div>
+<button type="button" class="btn addbtn float-right mt-2 mr-2" data-toggle="modal" data-target="#addtheme"> + </button>
 {% endblock %}
 
 
+
 {% block content %}
+
 <div class="ibox-content forum-container">
 	{% for theme in themes %}
 	<div class="forum-item active">
@@ -21,14 +35,16 @@
 	            <div class="forum-icon">
 	                <i class="fa fa-shield"></i>
 	            </div>
-	            <a href="{{ path('app_discussion', {'theme': theme.titre, 'page': 1}) }}" class="forum-item-title">{{ theme.titre }}</a>
+	            <a href="{{ path('app_discussion', {'theme': theme.titre}) }}" class="forum-item-title">{{ theme.titre }}</a>
 	            <div class="forum-sub-title">{{ theme.sousTitre }}</div>
 	        </div>
 	        <div class="col-lg-1 col-md-1 col-sm-1"></div>
-	        {% for discussion in theme.discussion %}
+	        {% for infos in infosThemes %}
+	        {% if infos.theme_id == theme.id %}
+	        {# for discussion in infos.discussion #}
 	        <div class="col-lg-2 col-md-2 col-sm-2 forum-info">
 	            <span class="views-number">
-	            	{{ discussion.auteur.pseudo}}	            	
+	            	{{ infos['pseudo'] }}
 	            </span>
 	            <div>
 	                <small>Dernière auteur</small>
@@ -36,12 +52,13 @@
 	        </div>
 	        <div class="col-lg-2 col-md-2 col-sm-2 forum-info">
 	            <span class="views-number">
-	                {{ discussion.date|date('d-m-Y') }}
+	                {{ infos['date']|date('d-m-Y') }}
 	            </span>
 	        	<div>
 	            	<small>Dernier post</small>
 	            </div>
 	        </div>
+			{% endif %}
 			{% endfor %}
 	        <div class="col-lg-2 col-md-2 col-sm-2 forum-info">
 	            <span class="views-number">
@@ -55,5 +72,9 @@
 	</div>
 	{% endfor %}
 </div>
+
+<button type="button" class="btn addbtn float-right mt-2 mr-2" data-toggle="modal" data-target="#addtheme"> + </button>
+
+{% include "AppBundle:Forum:Form/addThemeForm.html.twig" %}
 
 {% endblock %}

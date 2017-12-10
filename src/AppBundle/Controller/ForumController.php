@@ -19,7 +19,7 @@ use \DateTime;
 
 class ForumController extends Controller
 {
-  public function indexAction($page)
+  public function indexAction(Request $request, $page)
   {
     if ($page < 1) {
       return $this->redirectToRoute('app_home');
@@ -28,9 +28,14 @@ class ForumController extends Controller
     $nbPerPage = 5;
 
     $em     = $this->getDoctrine()->getManager();
+
     $themes = $em
       ->getRepository('AppBundle:Themes')
-      ->getThemesLastDiscus($page, $nbPerPage);
+      ->getThemes($page, $nbPerPage);
+
+    $infosThemes = $em
+      ->getRepository('AppBundle:Discussion')
+      ->getInfoTheme($page, $nbPerPage);
 
     $nbDisc = $em
       ->getRepository('AppBundle:Discussion')
@@ -42,11 +47,47 @@ class ForumController extends Controller
       throw $this->createNotFoundException("La page ".$page." n'existe pas.");
     }
 
+    $formAdd = $this
+          ->createFormBuilder()
+          ->add('titre', TextType::class, array('label' => 'Titre du thème'))
+          ->add('soustitre', TextareaType::class, array('label' => 'Sous-titre du thème'))
+          ->add('submit', SubmitType::class, array('label' => 'Envoyer'))
+          ->getForm();
+
+    $formAdd->handleRequest($request);
+
+    if ($formAdd->isSubmitted() && $formAdd->isValid()) {
+      try {
+        $formAdd = $formAdd->getData();
+        $theme   = new Themes();
+        $theme->setTitre($formAdd['titre']);
+        $theme->setSousTitre($formAdd['soustitre']);
+        $theme->setNbDiscussion(0);
+        
+        $em->persist($theme);
+        $em->flush();
+
+        $request->getSession()->getFlashBag()->add('notice', 'Le thème est bien enregistré.');
+
+        return $this->redirectToRoute('app_home', array(
+          'page'  => 1,
+        ));
+      } catch (\Exception $exc) {
+        $request->getSession()->getFlashBag()->add('notice', 'Le thème n\'a pas pu être enregistré.');
+
+        return $this->redirectToRoute('app_home', array(
+          'page'  => 1,
+        ));
+      }
+    }
+
     return $this->render('AppBundle:Forum:index.html.twig', array(
-      'themes'   => $themes,
-      'nbDisc'   => $nbDisc,
-      'nbPages'  => $nbPages,
-      'page'     => $page,
+      'themes'      => $themes,
+      'infosThemes' => $infosThemes,
+      'nbDisc'      => $nbDisc,
+      'nbPages'     => $nbPages,
+      'page'        => $page,
+      'formAdd'     => $formAdd->createView(),
     ));
   }
 
@@ -72,10 +113,14 @@ class ForumController extends Controller
         ->getRepository('AppBundle:Discussion')
         ->getInfoCountDiscussions($theme->getTitre());
 
-      $nbPages = ceil(count($discussions)/$nbPerPage);
+      if (count($discussions) > 0) {
+        $nbPages = ceil(count($discussions)/$nbPerPage);
 
-      if ($page > $nbPages) {
-        throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        if ($page > $nbPages) {
+          throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        }
+      } else {
+        $nbPages = 1;
       }
 
       $formAdd = $this
@@ -92,7 +137,7 @@ class ForumController extends Controller
           $currMembre   = $em
             ->getRepository('AppBundle:Membres')
             ->findOneBy(['id' => 1]);
-          // ---------------------------------------- //
+        // ---------------------------------------- //
 
           $formAdd    = $formAdd->getData();
           $discussion = new Discussion();
@@ -118,7 +163,7 @@ class ForumController extends Controller
           ));
         }
       }
-      
+
       return $this->render('AppBundle:Forum:discussion.html.twig', array(
         'discussions' => $discussions,
         'theme'       => $theme,
@@ -138,7 +183,6 @@ class ForumController extends Controller
       $stat   = $em
         ->getRepository('AppBundle:Discussion')
         ->getStatProfil($id);
-
       $statGlobal = $em
         ->getRepository('AppBundle:Discussion')
         ->getStatSite();
@@ -170,8 +214,7 @@ class ForumController extends Controller
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
-        $mail = $form->getData();
-
+        $mail    = $form->getData();
         $message = \Swift_Message::newInstance()
           ->setSubject($mail['sujet'])
           ->setFrom('forum@mail.com')

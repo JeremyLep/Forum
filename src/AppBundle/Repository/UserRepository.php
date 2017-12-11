@@ -4,7 +4,7 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class MembresRepository extends EntityRepository
+class UserRepository extends EntityRepository
 {
 	
 }

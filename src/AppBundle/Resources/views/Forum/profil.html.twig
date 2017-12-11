@@ -15,12 +15,12 @@
 <div class="pull-left m-r-md mr-5">
     <a href="{{ path(app.request.get('_route'), {'id': id}) }}"><img height="45" width="45" src="{{ asset('bundles/app/images/' ~ profil.avatar ) }}"></a>
 </div>
-<h2>Profil {{ profil.pseudo }}</h2>
+<h2>Profil {{ profil.username }}</h2>
 {% endblock %}
 
 {% block breadcrum %}
 <div class="ibox-content mb-1 mt-1 p-10">
-	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path(app.request.get('_route'), {'id': id}) }}"> {{ profil.pseudo }}</a></p>
+	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path(app.request.get('_route'), {'id': id}) }}"> {{ profil.username }}</a></p>
 </div>
 {% endblock %}
 
@@ -48,7 +48,7 @@
 	<div class="tab-content clearfix">
 
 		<div class="tab-pane active ml-10" id="profil">
-			<h4 class="pb-3">Informations de {{ profil.pseudo }}</h4>
+			<h4 class="pb-3">Informations de {{ profil.username }}</h4>
           	<table class="table">
 			  <tbody class="profil">
 			    <tr>
@@ -64,8 +64,8 @@
 			      <td>{{ profil.email }}</td>
 			    </tr>
 			    <tr>
-			      <td>Pseudo</td>
-			      <td>{{ profil.pseudo }}</td>
+			      <td>username</td>
+			      <td>{{ profil.username }}</td>
 			    </tr>
 			    <tr>
 			      <td>Age</td>
@@ -88,11 +88,11 @@
 		</div>
 
 		<div class="tab-pane" id="statistique">
-			<h4 class="pb-3">Statistiques de {{ profil.pseudo }}</h4>
+			<h4 class="pb-3">Statistiques de {{ profil.username }}</h4>
 			<table class="table">
 			  <tbody class="profil">
 			    <tr>
-			      <td>Total des messages postés par {{ profil.pseudo }}</td>
+			      <td>Total des messages postés par {{ profil.username }}</td>
 			      <td>{{ maxItemP['disc'] }} </td>
 			    </tr>
 			    <tr>
@@ -116,7 +116,7 @@
 		</div>
 
 		<div class="tab-pane" id="contact">
-			<h4 class="pb-3">Envoyer un mail à {{ profil.pseudo }}</h4>
+			<h4 class="pb-3">Envoyer un mail à {{ profil.username }}</h4>
 			{% include "AppBundle:Forum:Form/profilForm.html.twig" %}
 		</div>
 

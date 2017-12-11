@@ -37,7 +37,7 @@
 		</div>
 		<div class="col-8">
 			<div class="row">
-				<h5><a href="{{ path('app_profil', {'id': discussion.auteur.id}) }}">{{ discussion.auteur.pseudo }}</a></h5>
+				<h5><a href="{{ path('app_profil', {'id': discussion.auteur.id}) }}">{{ discussion.auteur.username }}</a></h5>
 			</div>
 			<div class="row">
 				<small class="forum-desc">{{ discussion.date|date() }}</small>

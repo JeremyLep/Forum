@@ -4,7 +4,7 @@
 		{{ form_label(formAdd.discussion, "Ajouter un post", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
 		{{ form_errors(formAdd.discussion) }}
 		<div class="col-sm-12">
-		  	{{ form_widget(formAdd.discussion, {'attr': {'class': 'form-control'}}) }}
+		  	{{ form_widget(formAdd.discussion, {'attr': {'class': 'form-control', 'rows': '5'}}) }}
 		</div>
 		<div class="col-lg-12 p-2">
 			{{ form_widget(formAdd.submit, {'attr': {'class': 'btn btn-primary'}}) }}

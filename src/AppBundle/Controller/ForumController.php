@@ -144,8 +144,10 @@ class ForumController extends Controller
           $discussion->setContenu($formAdd['discussion']);
           $discussion->setAuteur($currMembre);
           $discussion->setTheme($theme);
+          $theme->addDiscussion($discussion);
         
           $em->persist($discussion);
+          $em->persist($theme);
           $em->flush();
 
           $request->getSession()->getFlashBag()->add('notice', 'Post bien enregistré.');
@@ -171,6 +173,115 @@ class ForumController extends Controller
         'nbPages'     => $nbPages,
         'page'        => $page,
         'formAdd'     => $formAdd->createView(),
+      ));
+    }
+
+    public function editDiscussionAction(Request $request, $theme, $id)
+    {
+      $em         = $this->getDoctrine()->getManager();
+      $discussion = $em
+        ->getRepository('AppBundle:Discussion')
+        ->findOneBy(['id' => $id]);
+
+      $theme = $em
+        ->getRepository('AppBundle:Themes')
+        ->findOneBy(['titre' => $theme]);
+
+      $formEdit = $this
+          ->createFormBuilder()
+          ->add('discussion', TextareaType::class, array(
+          'data' => $discussion->getContenu()))
+          ->add('submit', SubmitType::class, array(
+            'label' => 'Envoyer',
+            'attr' => array('class' => 'btn btn-primary'),
+          ))
+          ->getForm();
+
+      $formEdit->handleRequest($request);
+
+      if ($formEdit->isSubmitted() && $formEdit->isValid()) {
+        try {
+          $formEdit    = $formEdit->getData();
+          $discussion->setContenu($formEdit['discussion']);
+        
+          $em->persist($discussion);
+          $em->flush();
+
+          $request->getSession()->getFlashBag()->add('notice', 'Post bien modifié.');
+
+          return $this->redirectToRoute('app_edit_discussion', array(
+            'theme' => $theme->getTitre(),
+            'id'  => $discussion->getId(),
+          ));
+        } catch (\Exception $exc) {
+          $request->getSession()->getFlashBag()->add('notice', 'Post n\'a pas pu être modifié.');
+
+          return $this->redirectToRoute('app_edit_discussion', array(
+            'theme' => $theme->getTitre(),
+            'id'  => $discussion->getId(),
+          ));
+        }
+      }
+
+      return $this->render('AppBundle:Forum:editDiscussion.html.twig', array(
+        'discussion' => $discussion,
+        'theme'      => $theme,
+        'formEdit'   => $formEdit->createView(),
+      ));
+    }
+
+    public function removeDiscussionAction(Request $request, $theme, $id)
+    {
+      $em         = $this->getDoctrine()->getManager();
+      $discussion = $em
+        ->getRepository('AppBundle:Discussion')
+        ->findOneBy(['id' => $id]);
+
+      $theme = $em
+        ->getRepository('AppBundle:Themes')
+        ->findOneBy(['titre' => $theme]);
+
+      $formRemove = $this
+          ->createFormBuilder()
+          ->add('discussion', TextareaType::class, array(
+          'data' => $discussion->getContenu(), 'disabled' => true))
+          ->add('submit', SubmitType::class, array(
+            'label' => 'Supprimer',
+            'attr' => array('class' => 'btn btn-danger')
+          ))
+          ->getForm();
+
+      $formRemove->handleRequest($request);
+
+      if ($formRemove->isSubmitted() && $formRemove->isValid()) {
+        try {
+
+          $theme->removeDiscussion($discussion);
+          $em->remove($discussion);
+          $em->persist($theme);
+          $em->flush();
+
+          $request->getSession()->getFlashBag()->add('notice', 'Post bien supprimé.');
+
+          return $this->redirectToRoute('app_discussion', array(
+            'theme' => $theme->getTitre(),
+            'page'  => 1,
+          ));
+          
+        } catch (\Exception $exc) {
+          $request->getSession()->getFlashBag()->add('notice', 'Post n\'a pas pu être supprimé.');
+
+          return $this->redirectToRoute('app_remove_discussion', array(
+            'theme' => $theme->getTitre(),
+            'id'    => $id,
+          ));
+        }
+      }
+
+      return $this->render('AppBundle:Forum:editDiscussion.html.twig', array(
+        'discussion' => $discussion,
+        'theme'      => $theme,
+        'formEdit' => $formRemove->createView(),
       ));
     }
 

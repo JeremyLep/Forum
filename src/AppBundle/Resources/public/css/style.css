@@ -217,6 +217,10 @@ a.forum-item-title:hover {
   color:#fff;
 }
 
+.smallBtn{
+  font-size: 0.7rem;
+}
+
 .crumbread a{
   color: #8b969c;
   font-size: 15px;

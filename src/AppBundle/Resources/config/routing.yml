@@ -21,3 +21,17 @@ app_discussion:
        page: 1
     requirements:
         page: '\d+'
+
+app_edit_discussion:
+    path:      /{theme}/edit/{id}
+    defaults:
+       _controller: AppBundle:Forum:editDiscussion
+    requirements:
+        id: '\d+'
+
+app_remove_discussion:
+    path:      /{theme}/remove/{id}
+    defaults:
+       _controller: AppBundle:Forum:removeDiscussion
+    requirements:
+        id: '\d+'

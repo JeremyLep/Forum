@@ -1,0 +1,52 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block flashbag %}
+	{% for message in app.session.flashbag.get('notice') %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        	<span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% block title %}
+<div class="pull-left m-r-md mr-5">
+    <a href="{{ path('app_home') }}"><i class="fa fa-shield text-navy mid-icon"></i></a>
+</div>
+<h2> {{ theme.titre }}</h2>
+<small class="forum-desc">Action sur le post {{ discussion.id }} du thème {{ theme.titre }}</small>
+{% endblock %}
+
+{% block breadcrum %}
+<div class="ibox-content mb-1 mt-1 p-10">
+	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path('app_discussion', {'page': 1, 'theme': theme.titre}) }}"> {{ theme.titre }}</a> > <a class="" href="{{ path(app.request.get('_route'), {'theme': theme.titre, 'id': discussion.id}) }}"> {{ discussion.id }}</a></p>
+</div>
+{% endblock %}
+
+{% block paginator %}
+{% endblock %}
+
+{% block content %}
+<div class="ibox-content forum-container">
+{{ form_start(formEdit, {'attr': {'class': 'form-horizontal'}}) }}
+    {{ form_errors(formEdit) }}
+	<div class="form-group col-lg-12 m-0">
+		{{ form_label(formEdit.discussion, "modifier un post", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+		{{ form_errors(formEdit.discussion) }}
+		<div class="col-sm-12">
+		  	{{ form_widget(formEdit.discussion, {'attr': {'class': 'form-control', 'rows': '7'}}) }}
+		</div>
+		<div class="col-lg-12 p-2">
+			{{ form_widget(formEdit.submit) }}
+			<a href="{{ path('app_discussion', {'page': 1, 'theme': theme.titre}) }}" class="btn btn-default" role="button">Annuler</a>
+		</div>
+	</div>
+	{{ form_rest(formEdit) }}
+{{ form_end(formEdit) }}
+</div>
+{% endblock %}
+
+{% block paginatorBot %}
+{% endblock %}

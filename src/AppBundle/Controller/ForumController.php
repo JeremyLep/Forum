@@ -12,12 +12,14 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use AppBundle\Entity\Discussion;
+use AppBundle\Entity\Themes;
 use \DateTime;
 
 
 class ForumController extends Controller
 {
-  public function indexAction($page)
+  public function indexAction(Request $request, $page)
   {
     if ($page < 1) {
       return $this->redirectToRoute('app_home');
@@ -26,9 +28,14 @@ class ForumController extends Controller
     $nbPerPage = 5;
 
     $em     = $this->getDoctrine()->getManager();
+
     $themes = $em
       ->getRepository('AppBundle:Themes')
-      ->getThemesLastDiscus($page, $nbPerPage);
+      ->getThemes($page, $nbPerPage);
+
+    $infosThemes = $em
+      ->getRepository('AppBundle:Discussion')
+      ->getInfoTheme($page, $nbPerPage);
 
     $nbDisc = $em
       ->getRepository('AppBundle:Discussion')
@@ -40,36 +47,123 @@ class ForumController extends Controller
       throw $this->createNotFoundException("La page ".$page." n'existe pas.");
     }
 
+    $formAdd = $this
+          ->createFormBuilder()
+          ->add('titre', TextType::class, array('label' => 'Titre du thème'))
+          ->add('soustitre', TextareaType::class, array('label' => 'Sous-titre du thème'))
+          ->add('submit', SubmitType::class, array('label' => 'Envoyer'))
+          ->getForm();
+
+    $formAdd->handleRequest($request);
+
+    if ($formAdd->isSubmitted() && $formAdd->isValid()) {
+      try {
+        $formAdd = $formAdd->getData();
+        $theme   = new Themes();
+        $theme->setTitre($formAdd['titre']);
+        $theme->setSousTitre($formAdd['soustitre']);
+        $theme->setNbDiscussion(0);
+        
+        $em->persist($theme);
+        $em->flush();
+
+        $request->getSession()->getFlashBag()->add('notice', 'Le thème est bien enregistré.');
+
+        return $this->redirectToRoute('app_home', array(
+          'page'  => 1,
+        ));
+      } catch (\Exception $exc) {
+        $request->getSession()->getFlashBag()->add('notice', 'Le thème n\'a pas pu être enregistré.');
+
+        return $this->redirectToRoute('app_home', array(
+          'page'  => 1,
+        ));
+      }
+    }
+
     return $this->render('AppBundle:Forum:index.html.twig', array(
-      'themes'   => $themes,
-      'nbDisc'   => $nbDisc,
-      'nbPages'  => $nbPages,
-      'page'     => $page,
+      'themes'      => $themes,
+      'infosThemes' => $infosThemes,
+      'nbDisc'      => $nbDisc,
+      'nbPages'     => $nbPages,
+      'page'        => $page,
+      'formAdd'     => $formAdd->createView(),
     ));
   }
 
-    public function discussionAction($theme, $page)
+    public function discussionAction(Request $request, $theme, $page)
     {
       if ($page < 1) {
         return $this->redirectToRoute('app_discussion', array(
-          'theme' => $theme, 
+          'theme' => $theme,
           'page' => 1,
         ));
       }
       $nbPerPage   = 10;
       $em          = $this->getDoctrine()->getManager();
+      $theme       = $em
+        ->getRepository('AppBundle:Themes')
+        ->findOneBy(['titre' => $theme]);
+
       $discussions = $em
         ->getRepository('AppBundle:Discussion')
-        ->getDiscussions($theme, $page, $nbPerPage);
+        ->getDiscussions($theme->getTitre(), $page, $nbPerPage);
 
       $infosDisc   = $em
         ->getRepository('AppBundle:Discussion')
-        ->getInfoCountDiscussions($theme);
+        ->getInfoCountDiscussions($theme->getTitre());
 
-      $nbPages = ceil(count($discussions)/$nbPerPage);
+      if (count($discussions) > 0) {
+        $nbPages = ceil(count($discussions)/$nbPerPage);
 
-      if ($page > $nbPages) {
-        throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        if ($page > $nbPages) {
+          throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+        }
+      } else {
+        $nbPages = 1;
+      }
+
+      $formAdd = $this
+          ->createFormBuilder()
+          ->add('discussion', TextareaType::class)
+          ->add('submit', SubmitType::class, array('label' => 'Envoyer'))
+          ->getForm();
+
+      $formAdd->handleRequest($request);
+
+      if ($formAdd->isSubmitted() && $formAdd->isValid()) {
+        try {
+        // USE SESSION TO GET SESSION MEMBRE OBJECT //
+          $currMembre   = $em
+            ->getRepository('AppBundle:Membres')
+            ->findOneBy(['id' => 1]);
+        // ---------------------------------------- //
+
+          $formAdd    = $formAdd->getData();
+          $discussion = new Discussion();
+          $discussion->setContenu($formAdd['discussion']);
+          $discussion->setAuteur($currMembre);
+          $discussion->setTheme($theme);
+          $theme->addDiscussion($discussion);
+        
+          $em->persist($discussion);
+          $em->persist($theme);
+          $em->flush();
+
+          $request->getSession()->getFlashBag()->add('notice', 'Post bien enregistré.');
+
+          return $this->redirectToRoute('app_discussion', array(
+            'theme' => $theme->getTitre(),
+            'page'  => 1,
+          ));
+        } catch (\Exception $exc) {
+          $request->getSession()->getFlashBag()->add('notice', 'Post n\'a pas pu être enregistré.');
+
+          return $this->redirectToRoute('app_discussion', array(
+            'theme' => $theme->getTitre(),
+            'page'  => 1,
+          ));
+        }
       }
 
       return $this->render('AppBundle:Forum:discussion.html.twig', array(
@@ -78,6 +172,116 @@ class ForumController extends Controller
         'infosDisc'   => $infosDisc,
         'nbPages'     => $nbPages,
         'page'        => $page,
+        'formAdd'     => $formAdd->createView(),
+      ));
+    }
+
+    public function editDiscussionAction(Request $request, $theme, $id)
+    {
+      $em         = $this->getDoctrine()->getManager();
+      $discussion = $em
+        ->getRepository('AppBundle:Discussion')
+        ->findOneBy(['id' => $id]);
+
+      $theme = $em
+        ->getRepository('AppBundle:Themes')
+        ->findOneBy(['titre' => $theme]);
+
+      $formEdit = $this
+          ->createFormBuilder()
+          ->add('discussion', TextareaType::class, array(
+          'data' => $discussion->getContenu()))
+          ->add('submit', SubmitType::class, array(
+            'label' => 'Envoyer',
+            'attr' => array('class' => 'btn btn-primary'),
+          ))
+          ->getForm();
+
+      $formEdit->handleRequest($request);
+
+      if ($formEdit->isSubmitted() && $formEdit->isValid()) {
+        try {
+          $formEdit    = $formEdit->getData();
+          $discussion->setContenu($formEdit['discussion']);
+        
+          $em->persist($discussion);
+          $em->flush();
+
+          $request->getSession()->getFlashBag()->add('notice', 'Post bien modifié.');
+
+          return $this->redirectToRoute('app_edit_discussion', array(
+            'theme' => $theme->getTitre(),
+            'id'  => $discussion->getId(),
+          ));
+        } catch (\Exception $exc) {
+          $request->getSession()->getFlashBag()->add('notice', 'Post n\'a pas pu être modifié.');
+
+          return $this->redirectToRoute('app_edit_discussion', array(
+            'theme' => $theme->getTitre(),
+            'id'  => $discussion->getId(),
+          ));
+        }
+      }
+
+      return $this->render('AppBundle:Forum:editDiscussion.html.twig', array(
+        'discussion' => $discussion,
+        'theme'      => $theme,
+        'formEdit'   => $formEdit->createView(),
+      ));
+    }
+
+    public function removeDiscussionAction(Request $request, $theme, $id)
+    {
+      $em         = $this->getDoctrine()->getManager();
+      $discussion = $em
+        ->getRepository('AppBundle:Discussion')
+        ->findOneBy(['id' => $id]);
+
+      $theme = $em
+        ->getRepository('AppBundle:Themes')
+        ->findOneBy(['titre' => $theme]);
+
+      $formRemove = $this
+          ->createFormBuilder()
+          ->add('discussion', TextareaType::class, array(
+          'data' => $discussion->getContenu(), 'disabled' => true))
+          ->add('submit', SubmitType::class, array(
+            'label' => 'Supprimer',
+            'attr' => array('class' => 'btn btn-danger')
+          ))
+          ->getForm();
+
+      $formRemove->handleRequest($request);
+
+      if ($formRemove->isSubmitted() && $formRemove->isValid()) {
+        try {
+
+          $theme->removeDiscussion($discussion);
+          $em->remove($discussion);
+          $em->persist($theme);
+          $em->flush();
+
+          $request->getSession()->getFlashBag()->add('notice', 'Post bien supprimé.');
+
+          return $this->redirectToRoute('app_discussion', array(
+            'theme' => $theme->getTitre(),
+            'page'  => 1,
+          ));
+          
+        } catch (\Exception $exc) {
+          $request->getSession()->getFlashBag()->add('notice', 'Post n\'a pas pu être supprimé.');
+
+          return $this->redirectToRoute('app_remove_discussion', array(
+            'theme' => $theme->getTitre(),
+            'id'    => $id,
+          ));
+        }
+      }
+
+      return $this->render('AppBundle:Forum:editDiscussion.html.twig', array(
+        'discussion' => $discussion,
+        'theme'      => $theme,
+        'formEdit' => $formRemove->createView(),
       ));
     }
 
@@ -90,7 +294,6 @@ class ForumController extends Controller
       $stat   = $em
         ->getRepository('AppBundle:Discussion')
         ->getStatProfil($id);
-
       $statGlobal = $em
         ->getRepository('AppBundle:Discussion')
         ->getStatSite();
@@ -109,8 +312,8 @@ class ForumController extends Controller
       $days       = $dateProfil->diff($now)->days;
       $days       = $maxItemP['disc'] / $days;
 
-      $pourcentDisc      = (100 * $maxItemP['disc'])/($maxItemS['disc']);
-      $pourcentTheme     = (100 * $maxItemP['theme'])/($maxItemS['theme']);
+      $pourcentDisc  = (100 * $maxItemP['disc'])/($maxItemS['disc']);
+      $pourcentTheme = (100 * $maxItemP['theme'])/($maxItemS['theme']);
 
       $form = $this->createFormBuilder()
             ->add('sujet', TextType::class, array('label' => 'Sujet '))
@@ -122,8 +325,7 @@ class ForumController extends Controller
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
-        $mail = $form->getData();
-
+        $mail    = $form->getData();
         $message = \Swift_Message::newInstance()
           ->setSubject($mail['sujet'])
           ->setFrom('forum@mail.com')
@@ -131,7 +333,7 @@ class ForumController extends Controller
           ->setBody($mail['contenu']);
  
         if ($this->get('mailer')->send($message)) {
-            $request->getSession()->getFlashBag()->add('success', 'Success ! Votre mail a bien été envoyé !');
+            $request->getSession()->getFlashBag()->add('success', 'Succès ! Votre mail a bien été envoyé !');
         } else {
             $request->getSession()->getFlashBag()->add('danger', 'Erreur ! Votre mail n\'a pas pu s\'envoyer !');
         }
@@ -140,14 +342,14 @@ class ForumController extends Controller
       }
 
       return $this->render('AppBundle:Forum:profil.html.twig', array(
-        'profil'   => $profil,
-        'maxItemP' => $maxItemP,
-        'maxItemS' => $maxItemS,
-        'pourcentDisc'    => $pourcentDisc,
-        'pourcentTheme'   => $pourcentTheme,
-        'days'     => $days,
-        'id'       => $id,
-        'form' => $form->createView(),
+        'profil'        => $profil,
+        'maxItemP'      => $maxItemP,
+        'maxItemS'      => $maxItemS,
+        'pourcentDisc'  => $pourcentDisc,
+        'pourcentTheme' => $pourcentTheme,
+        'days'          => $days,
+        'id'            => $id,
+        'form'          => $form->createView(),
       ));
     }
 }

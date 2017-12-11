@@ -23,23 +23,17 @@ class DiscussionRepository extends EntityRepository
       	  	  ->setMaxResults($nbPerPage);
 
     	return new Paginator($query, true);
+	}
 
-/*
+	public function getinfoTheme($page, $nbPerPage) {
 		$cnx = $this->getEntityManager()->getConnection();
 	    $query = <<<SQL
-        	SELECT d.*, m.pseudo
-			FROM discussion d
-			JOIN themes t
-			JOIN membres m
-			WHERE t.titre = ":theme"
-			AND d.theme_id = t.id
-			AND m.id = d.auteur_id
-			ORDER BY d.date ASC
+        	SELECT max(d.date) AS date, m.pseudo, d.theme_id
+			FROM discussion AS d, membres AS m
+			WHERE d.auteur_id = m.id
+			GROUP BY d.theme_id
 SQL;
-		$query = str_replace(":theme", (string)$theme, $query);
-
 		return $cnx->fetchAll($query);
-*/
 	}
 
 	public function getNbDiscussion() {
@@ -85,10 +79,4 @@ SQL;
 SQL;
 		return $cnx->fetchAll($query);
 	}
-	   /*   
-	   Total messages postés
-      Pourcentage msg = total msg / msg posté
-      theme participé
-      % participation dans theme = total theme / theme participé
-      Msg par jours = date_inscription->nbJours / msg posté*/
 }

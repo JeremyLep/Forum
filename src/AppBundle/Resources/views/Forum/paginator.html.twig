@@ -5,7 +5,7 @@
       		<a class="pagination-link" href="{{ path(app.request.get('_route'), {'page': p}) }}">{{ p }}</a>
 		{% endif %}
 		{% if app.request.get('_route') == 'app_discussion' %}
-			<a class="pagination-link" href="{{ path(app.request.get('_route'), {'page': p, 'theme': theme}) }}">{{ p }}</a>
+			<a class="pagination-link" href="{{ path(app.request.get('_route'), {'page': p, 'theme': theme.titre}) }}">{{ p }}</a>
 		{% endif %}
     </li>
   {% endfor %}

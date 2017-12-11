@@ -88,7 +88,7 @@ class User extends FosUser
     public function __construct()
     {
         $this->dateInscription = new \DateTime;
-        $this->valid = 0;
+        $this->valid = false;
         parent::__construct();
     }
 

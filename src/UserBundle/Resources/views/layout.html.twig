@@ -1,0 +1,32 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}
+{% endblock %}
+
+{% block paginator %}
+{% endblock %}
+
+{% block paginatorBot %}
+{% endblock %}
+
+{% block body %}
+
+
+  {% for key, messages in app.session.flashbag.all() %}
+    {% for message in messages %}
+      <div class="alert alert-{{ key }}">
+        {{ message|trans({}, 'FOSUserBundle') }}
+      </div>
+    {% endfor %}
+  {% endfor %}
+  
+  {% block content %}
+    <div class="ibox-content mb-1 mt-1">
+      <div class="form-group col-sm-12">
+        {% block fos_user_content %}
+        {% endblock fos_user_content %}
+      </div>
+    </div>
+  {% endblock %}
+
+{% endblock %}

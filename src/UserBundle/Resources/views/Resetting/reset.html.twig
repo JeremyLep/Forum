@@ -1,0 +1,13 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block title %}
+	<div class="pull-left m-r-md mr-5">
+    	<a href="{{ path('app_home') }}"><i class="fa fa-key text-navy mid-icon"></i></a>
+	</div>
+	<h2> Votre mot de passe à bien été initialisé </h2>
+	<small class="forum-desc">Vous pouvez maintenant vous <a href="{{ path('fos_user_security_login') }}">connecter</a> avec votre nouveau mot de passe</small>
+{% endblock %}
+
+{% block fos_user_content %}
+{% include "@FOSUser/Resetting/reset_content.html.twig" %}
+{% endblock fos_user_content %}

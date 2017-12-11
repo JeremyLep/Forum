@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as FosUser;
@@ -8,7 +8,7 @@ use FOS\UserBundle\Model\User as FosUser;
  * User
  *
  * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
  */
 class User extends FosUser
 {
@@ -80,7 +80,7 @@ class User extends FosUser
     /**
      * @var \Discussion
      *
-     * @ORM\OneToMany(targetEntity="Discussion", mappedBy="auteur")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Discussion", mappedBy="auteur")
      *
      */
     protected $discussion;

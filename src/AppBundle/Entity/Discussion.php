@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User as User;
 
 /**
  * Discussion
@@ -38,7 +39,7 @@ class Discussion
     /**
      * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="discussion")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="discussion")
      *
      */
     private $auteur;

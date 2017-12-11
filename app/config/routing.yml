@@ -3,4 +3,4 @@ app_home:
     prefix:   
 
 fos_user:
-    resource: "@AppBundle/Resources/config/routingFosUser.yml"
+    resource: "@UserBundle/Resources/config/routing.yml"

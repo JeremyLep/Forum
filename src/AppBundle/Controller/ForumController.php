@@ -135,7 +135,7 @@ class ForumController extends Controller
         try {
         // USE SESSION TO GET SESSION USER OBJECT //
           $currUser   = $em
-            ->getRepository('AppBundle:User')
+            ->getRepository('UserBundle:User')
             ->findOneBy(['id' => 1]);
         // ---------------------------------------- //
 
@@ -289,7 +289,7 @@ class ForumController extends Controller
     {
       $em     = $this->getDoctrine()->getManager();
       $profil = $em
-        ->getRepository('AppBundle:User')
+        ->getRepository('UserBundle:User')
         ->find($id);
       $stat   = $em
         ->getRepository('AppBundle:Discussion')

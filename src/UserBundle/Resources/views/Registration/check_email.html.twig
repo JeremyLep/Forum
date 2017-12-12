@@ -2,6 +2,15 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 
+{% block title %}
+	<div class="pull-left m-r-md mr-5">
+    	<a href="{{ path('app_home') }}"><i class="fa fa-envelope text-navy mid-icon"></i></a>
+	</div>
+	<h2>Consultez votre boite mail !</h2>
+	
+{% endblock %}
+
 {% block fos_user_content %}
-    <p>{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
-{% endblock fos_user_content %}
+<p> Vous avez reçu un mail contenant un lien qui vous permettra de valider votre compte !
+</p>
+{% endblock %}

@@ -1,5 +1,13 @@
 {% extends "@FOSUser/layout.html.twig" %}
 
+{% block title %}
+	<div class="pull-left m-r-md mr-5">
+    	<a href="{{ path('app_home') }}"><i class="fa fa-key text-navy mid-icon"></i></a>
+	</div>
+	<h2> Modifier votre mot de passe ! </h2>
+	<small class="forum-desc">Entrez votre identifiant afin de réinitialiser votre mot de passe</small>
+{% endblock %}
+
 {% block fos_user_content %}
 {% include "@FOSUser/Resetting/request_content.html.twig" %}
 {% endblock fos_user_content %}

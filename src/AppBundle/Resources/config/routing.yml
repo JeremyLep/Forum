@@ -15,7 +15,7 @@ app_profil:
 
 
 app_discussion:
-    path:      /{theme}/{page}
+    path:      /theme/{theme}/{page}
     defaults:
        _controller: AppBundle:Forum:discussion
        page: 1
@@ -23,14 +23,14 @@ app_discussion:
         page: '\d+'
 
 app_edit_discussion:
-    path:      /{theme}/edit/{id}
+    path:      /theme/{theme}/edit/{id}
     defaults:
        _controller: AppBundle:Forum:editDiscussion
     requirements:
         id: '\d+'
 
 app_remove_discussion:
-    path:      /{theme}/remove/{id}
+    path:      /theme/{theme}/remove/{id}
     defaults:
        _controller: AppBundle:Forum:removeDiscussion
     requirements:

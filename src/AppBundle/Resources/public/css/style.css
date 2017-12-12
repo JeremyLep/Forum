@@ -217,6 +217,16 @@ a.forum-item-title:hover {
   color:#fff;
 }
 
+.bot-align {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -50px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+    height: 50px; /* .push must be the same height as .footer */
+}
+
 .smallBtn{
   font-size: 0.7rem;
 }

@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use FOS\UserBundle\Model\User as FosUser;
 /**
- * Membres
+ * User
  *
- * @ORM\Table(name="membres")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\MembresRepository")
+ * @ORM\Table(name="user")
+ * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
  */
-class Membres
+class User extends FosUser
 {
     /**
      * @var integer
@@ -19,89 +19,68 @@ class Membres
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", nullable=false)
-     */
-    private $email;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", nullable=false)
-     */
-    private $password;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="pseudo", type="string", nullable=false)
-     */
-    private $pseudo;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="nom", type="string", nullable=true)
      */
-    private $nom;
+    protected $nom;
 
     /**
      * @var string
      *
      * @ORM\Column(name="prenom", type="string", nullable=true)
      */
-    private $prenom;
+    protected $prenom;
 
     /**
      * @var string
      *
      * @ORM\Column(name="avatar", type="string", nullable=true)
      */
-    private $avatar;
+    protected $avatar;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="date_inscription", type="datetime", nullable=false)
      */
-    private $dateInscription;
+    protected $dateInscription;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="age", type="integer", nullable=true)
      */
-    private $age;
+    protected $age;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tel", type="string", nullable=false)
+     * @ORM\Column(name="tel", type="string", nullable=true)
      */
-    private $tel;
+    protected $tel;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ville", type="string", nullable=false)
+     * @ORM\Column(name="ville", type="string", nullable=true)
      */
-    private $ville;
+    protected $ville;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="valid", type="boolean", nullable=false)
      */
-    private $valid;
+    protected $valid;
 
     /**
      * @var \Discussion
      *
-     * @ORM\OneToMany(targetEntity="Discussion", mappedBy="auteur")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Discussion", mappedBy="auteur")
      *
      */
     protected $discussion;
@@ -109,6 +88,8 @@ class Membres
     public function __construct()
     {
         $this->dateInscription = new \DateTime;
+        $this->valid = false;
+        parent::__construct();
     }
 
     /**
@@ -122,83 +103,11 @@ class Membres
     }
 
     /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return Membres
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     *
-     * @return Membres
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set pseudo
-     *
-     * @param string $pseudo
-     *
-     * @return Membres
-     */
-    public function setPseudo($pseudo)
-    {
-        $this->pseudo = $pseudo;
-
-        return $this;
-    }
-
-    /**
-     * Get pseudo
-     *
-     * @return string
-     */
-    public function getPseudo()
-    {
-        return $this->pseudo;
-    }
-
-    /**
      * Set nom
      *
      * @param string $nom
      *
-     * @return Membres
+     * @return User
      */
     public function setNom($nom)
     {
@@ -222,7 +131,7 @@ class Membres
      *
      * @param string $prenom
      *
-     * @return Membres
+     * @return User
      */
     public function setPrenom($prenom)
     {
@@ -246,7 +155,7 @@ class Membres
      *
      * @param \DateTime $dateInscription
      *
-     * @return Membres
+     * @return User
      */
     public function setDateInscription($dateInscription)
     {
@@ -270,7 +179,7 @@ class Membres
      *
      * @param integer $age
      *
-     * @return Membres
+     * @return User
      */
     public function setAge($age)
     {
@@ -294,7 +203,7 @@ class Membres
      *
      * @param string $tel
      *
-     * @return Membres
+     * @return User
      */
     public function setTel($tel)
     {
@@ -318,7 +227,7 @@ class Membres
      *
      * @param string $avatar
      *
-     * @return Membres
+     * @return User
      */
     public function setAvatar($avatar)
     {
@@ -342,7 +251,7 @@ class Membres
      *
      * @param string $ville
      *
-     * @return Membres
+     * @return User
      */
     public function setVille($ville)
     {
@@ -366,7 +275,7 @@ class Membres
      *
      * @param boolean $valid
      *
-     * @return Membres
+     * @return User
      */
     public function setValid($valid)
     {

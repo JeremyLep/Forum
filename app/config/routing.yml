@@ -1,3 +1,6 @@
 app_home:
     resource: "@AppBundle/Resources/config/routing.yml"
     prefix:   
+
+fos_user:
+    resource: "@UserBundle/Resources/config/routing.yml"

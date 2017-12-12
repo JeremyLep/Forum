@@ -133,16 +133,16 @@ class ForumController extends Controller
 
       if ($formAdd->isSubmitted() && $formAdd->isValid()) {
         try {
-        // USE SESSION TO GET SESSION MEMBRE OBJECT //
-          $currMembre   = $em
-            ->getRepository('AppBundle:Membres')
+        // USE SESSION TO GET SESSION USER OBJECT //
+          $currUser   = $em
+            ->getRepository('UserBundle:User')
             ->findOneBy(['id' => 1]);
         // ---------------------------------------- //
 
           $formAdd    = $formAdd->getData();
           $discussion = new Discussion();
           $discussion->setContenu($formAdd['discussion']);
-          $discussion->setAuteur($currMembre);
+          $discussion->setAuteur($currUser);
           $discussion->setTheme($theme);
           $theme->addDiscussion($discussion);
         
@@ -289,7 +289,7 @@ class ForumController extends Controller
     {
       $em     = $this->getDoctrine()->getManager();
       $profil = $em
-        ->getRepository('AppBundle:Membres')
+        ->getRepository('UserBundle:User')
         ->find($id);
       $stat   = $em
         ->getRepository('AppBundle:Discussion')
@@ -310,7 +310,12 @@ class ForumController extends Controller
       $now        = new DateTime();
       $dateProfil = $profil->getDateInscription();
       $days       = $dateProfil->diff($now)->days;
-      $days       = $maxItemP['disc'] / $days;
+
+      if ($days == 0) {
+        $days = $maxItemP['disc'];
+      } else {
+        $days = $maxItemP['disc'] / $days;
+      }
 
       $pourcentDisc  = (100 * $maxItemP['disc'])/($maxItemS['disc']);
       $pourcentTheme = (100 * $maxItemP['theme'])/($maxItemS['theme']);

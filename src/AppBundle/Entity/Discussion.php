@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User as User;
 
 /**
  * Discussion
@@ -36,13 +37,12 @@ class Discussion
     private $contenu;
 
     /**
-     * @var \Membres
+     * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="Membres", inversedBy="discussion")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="discussion")
      *
      */
     private $auteur;
-
 
     /**
      * @var \Themes
@@ -118,11 +118,11 @@ class Discussion
     /**
      * Set auteur
      *
-     * @param \AppBundle\Entity\Membres $auteur
+     * @param User $auteur
      *
      * @return Discussion
      */
-    public function setAuteur(\AppBundle\Entity\Membres $auteur)
+    public function setAuteur(User $auteur)
     {
         $this->auteur = $auteur;
 
@@ -132,7 +132,7 @@ class Discussion
     /**
      * Get auteur
      *
-     * @return \AppBundle\Entity\Membres
+     * @return User
      */
     public function getAuteur()
     {

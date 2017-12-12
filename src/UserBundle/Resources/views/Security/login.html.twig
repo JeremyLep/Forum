@@ -1,0 +1,18 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block title %}
+	<div class="pull-left m-r-md mr-5">
+    	<a href="{{ path('app_home') }}"><i class="fa fa-user text-navy mid-icon"></i></a>
+	</div>
+	<h2> Connexion </h2>
+	<small class="forum-desc">Connectez-vous pour poster des message sur ce forum ! </small>
+{% endblock %}
+
+{% block fos_user_content %}
+    {{ include('@FOSUser/Security/login_content.html.twig') }}
+	<div class="pull-left">
+		<small class="forum-desc"><a href="{{ path('fos_user_registration_register') }}">Vous n'avez pas de compte ?</a> </small>
+	</div>
+{% endblock fos_user_content %}
+
+

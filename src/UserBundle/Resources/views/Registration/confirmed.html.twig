@@ -1,0 +1,16 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}
+	<div class="pull-left m-r-md mr-5">
+    	<a href="{{ path('app_home') }}"><i class="fa fa-check text-navy mid-icon"></i></a>
+	</div>
+	<h2 class="text-navy"> Inscirption réussi </h2>
+	<small class="forum-desc">Vous avez recu un email avec un lien afin de valider votre compte.</small>
+{% endblock %}
+
+{% block fos_user_content %}
+    <h6 class="">Validez votre compte et vous pourrez apporter votre contribution au forum !<br></h6> 
+    <a href="{{ path('app_home') }}" class="text-center">Retourné sur le forum</a>
+{% endblock fos_user_content %}

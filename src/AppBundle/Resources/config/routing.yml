@@ -35,3 +35,8 @@ app_remove_discussion:
        _controller: AppBundle:Forum:removeDiscussion
     requirements:
         id: '\d+'
+
+app_list_user:
+    path:      /list-membre
+    defaults:
+       _controller: AppBundle:Forum:listUser

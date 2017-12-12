@@ -374,4 +374,42 @@ class ForumController extends Controller
         'form'          => $form->createView(),
       ));
     }
+
+    /**
+     *
+     * @Security("has_role('ROLE_MODO')")
+     */  
+    public function listUserAction(Request $request)
+    {
+      $em     = $this->getDoctrine()->getManager();
+      $users = $em
+        ->getRepository('UserBundle:User')
+        ->findAll();
+
+      /*$form = $this->createFormBuilder()
+            ->add('sujet', TextType::class, array('label' => 'Sujet '))
+            ->add('contenu', TextareaType::class, array('label' => 'Contenu '))
+            ->add('date', HiddenType::class)
+            ->add('submit', SubmitType::class, array('label' => 'Envoyer par mail'))
+            ->getForm();
+
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+      
+ 
+        if ($this->get('mailer')->send($message)) {
+            $request->getSession()->getFlashBag()->add('success', 'Succès ! Votre mail a bien été envoyé !');
+        } else {
+            $request->getSession()->getFlashBag()->add('danger', 'Erreur ! Votre mail n\'a pas pu s\'envoyer !');
+        }
+        
+        return $this->redirectToRoute('app_profil', array('id' => $id));
+      }*/
+
+      return $this->render('AppBundle:Forum:listUser.html.twig', array(
+        'users' => $users,
+        //'form'          => $form->createView(),
+      ));
+    }
 }

@@ -89,6 +89,7 @@ class User extends FosUser
     {
         $this->dateInscription = new \DateTime;
         $this->valid = false;
+        $this->roles = array('ROLE_USER');
         parent::__construct();
     }
 
@@ -292,5 +293,10 @@ class User extends FosUser
     public function getValid()
     {
         return $this->valid;
+    }
+
+    public function isAuthor(User $user = null)
+    {
+        return $user && $user->getEmail() == $this->getEmail();
     }
 }

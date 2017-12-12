@@ -217,6 +217,13 @@ a.forum-item-title:hover {
   color:#fff;
 }
 
+.btnNav{
+  padding-top: 10%;
+  height: 49px;
+  width: 100px;
+  border-radius: 0;
+}
+
 .bot-align {
     min-height: 100%;
     height: auto !important;

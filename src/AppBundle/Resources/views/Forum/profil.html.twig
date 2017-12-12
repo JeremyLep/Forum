@@ -33,9 +33,11 @@
 		<li role="statistique" class="nav-item">
 			<a class="nav-link" href="#statistique" data-toggle="tab">Statistiques</a>
 		</li>
+		{% if profil.isAuthor(app.user) == false %}
 		<li role="contact" class="nav-item">
 			<a class="nav-link" href="#contact" data-toggle="tab">Contact</a>
 		</li>
+		{% endif %}
 	</ul>
 </div>
 {% endblock %}
@@ -85,7 +87,9 @@
 			    </tr>
 			  </tbody>
 			</table>
+			{% if profil.isAuthor(app.user) %}
 			<a class="btn btn-danger text-center" href="{{ path('fos_user_resetting_request') }}">Modifier votre mot de passe</a>
+			{% endif %}
 		</div>
 
 		<div class="tab-pane" id="statistique">
@@ -116,11 +120,12 @@
 			</table>
 		</div>
 
+		{% if profil.isAuthor(app.user) == false %}
 		<div class="tab-pane" id="contact">
 			<h4 class="pb-3">Envoyer un mail à {{ profil.username }}</h4>
 			{% include "AppBundle:Forum:Form/profilForm.html.twig" %}
 		</div>
-
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

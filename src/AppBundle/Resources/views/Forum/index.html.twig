@@ -20,7 +20,9 @@
         <h3>Thèmes</h3>
     </div>
 </div>
+{% if is_granted('ROLE_MODO') %}
 <button type="button" class="btn btn-primary rounded-circle float-right mt-3 mr-3" style="padding-left: 15px; padding-right: 15px;" data-toggle="modal" data-target="#addtheme"> + </button>
+{% endif %}
 {% endblock %}
 
 
@@ -72,8 +74,9 @@
 	</div>
 	{% endfor %}
 </div>
-
+{% if is_granted('ROLE_MODO') %}
 <button type="button" class="btn btn-primary rounded-circle float-right mt-3 mr-3" style="padding-left: 15px; padding-right: 15px;" data-toggle="modal" data-target="#addtheme"> + </button>
+{% endif %}
 
 {% include "AppBundle:Forum:Form/addThemeForm.html.twig" %}
 

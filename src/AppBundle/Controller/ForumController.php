@@ -172,16 +172,21 @@ class ForumController extends Controller
       ));
     }
 
-/**
- *
- * @Security("has_role('ROLE_MODO')")
- */
     public function editDiscussionAction(Request $request, $theme, $id)
     {
+      $user       = $this->getUser();
+      $security   = $this->get('security.authorization_checker');
       $em         = $this->getDoctrine()->getManager();
       $discussion = $em
         ->getRepository('AppBundle:Discussion')
         ->findOneBy(['id' => $id]);
+
+      if (($security->isGranted('ROLE_MODO')) or ($discussion->getAuteur()->isAuthor($user))) {
+           
+      }
+      else {
+        throw $this->createAccessDeniedException('Vous n\'etes pas autorisé à accéder à cette page !');
+      }
 
       $theme = $em
         ->getRepository('AppBundle:Themes')
@@ -198,8 +203,7 @@ class ForumController extends Controller
           ->getForm();
 
       $formEdit->handleRequest($request);
-      $securityContext = $this->get('security.authorization_checker');
-      if ($formEdit->isSubmitted() && $formEdit->isValid() && $securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+      if ($formEdit->isSubmitted() && $formEdit->isValid() && $security->isGranted('IS_AUTHENTICATED_FULLY')) {
         try {
           $formEdit    = $formEdit->getData();
           $discussion->setContenu($formEdit['discussion']);
@@ -232,17 +236,20 @@ class ForumController extends Controller
       ));
     }
 
-/**
- *
- * @Security("has_role('ROLE_MODO')")
- */
     public function removeDiscussionAction(Request $request, $theme, $id)
     {
+      $user       = $this->getUser();
+      $security   = $this->get('security.authorization_checker');
       $em         = $this->getDoctrine()->getManager();
       $discussion = $em
         ->getRepository('AppBundle:Discussion')
         ->findOneBy(['id' => $id]);
 
+      if (($security->isGranted('ROLE_MODO')) or ($discussion->getAuteur()->isAuthor($user))) {
+        
+      } else {
+        throw $this->createAccessDeniedException('Vous n\'etes pas autorisé à accéder à cette page !');
+      }
       $theme = $em
         ->getRepository('AppBundle:Themes')
         ->findOneBy(['titre' => $theme]);
@@ -258,8 +265,7 @@ class ForumController extends Controller
           ->getForm();
 
       $formRemove->handleRequest($request);
-      $securityContext = $this->get('security.authorization_checker');
-      if ($formRemove->isSubmitted() && $formRemove->isValid() && $securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+      if ($formRemove->isSubmitted() && $formRemove->isValid() && $security->isGranted('IS_AUTHENTICATED_FULLY')) {
         try {
           $theme->removeDiscussion($discussion);
           $em->remove($discussion);

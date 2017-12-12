@@ -43,7 +43,7 @@
 				<small class="forum-desc">{{ discussion.date|date() }}</small>
 			</div>
 		</div>
-		{% if is_granted('ROLE_MODO') %}
+		{% if (is_granted('ROLE_MODO')) or (discussion.isAuthor(app.user)) %}
 		<div class="col-3 text-right">
 			<a href="{{ path('app_edit_discussion', {'id': discussion.id, 'theme': theme.titre}) }}" class="btn btn-primary smallBtn a-btn-slide-text">
 				<i class="fa fa-pencil-square-o" aria-hidden="true"></i>

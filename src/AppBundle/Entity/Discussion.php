@@ -162,4 +162,9 @@ class Discussion
     {
         return $this->theme;
     }
+
+    public function isAuthor(User $user = null)
+    {
+        return $user && $user->getEmail() == $this->getAuteur()->getEmail();
+    }
 }

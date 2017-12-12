@@ -294,4 +294,9 @@ class User extends FosUser
     {
         return $this->valid;
     }
+
+    public function isAuthor(User $user = null)
+    {
+        return $user && $user->getEmail() == $this->getEmail();
+    }
 }

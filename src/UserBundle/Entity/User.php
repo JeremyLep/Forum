@@ -89,6 +89,7 @@ class User extends FosUser
     {
         $this->dateInscription = new \DateTime;
         $this->valid = false;
+        $this->roles = array('ROLE_USER');
         parent::__construct();
     }
 

@@ -21,18 +21,26 @@
 
         {% block menu %}
             <div class="ibox-footer mb-3 p-0 w-100" style="height: 50px;">
+
+                {% if false == app.user %}
                 <div class="btn-group float-right">
-                    <a href="{{ path('fos_user_security_login') }}" class="btn btn-primary" style="height: 49px; width:100px; border-radius: 0;">Connexion</a>
+                    <a href="{{ path('fos_user_registration_register') }}" class="btn btn-primary btnNav">Inscription</a>
                 </div>
+                <div class="btn-group float-right">
+                    <a href="{{ path('fos_user_security_login') }}" class="btn btn-primary btnNav">Connexion</a>
+                </div>
+                {% endif %}
+                {% if app.user %}
                 <div class="btn-group float-right">
                   <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 49px; width:100px; border-radius: 0;">
                     <p class="m-0"><i class="fa fa-user text-white" style="font-size:20px;"></i></p>
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{# path('app_profil') #}"><button class="dropdown-item" type="button">Profil</button></a>
+                    <a href="{{ path('app_profil', {'id': app.user.id}) }}"><button class="dropdown-item" type="button">Profil</button></a>
                     <a href="{{ path('fos_user_security_logout') }}"><button class="dropdown-item" type="button">Déconnexion</button></a>
                   </div>
                 </div>
+                {% endif %}
             </div>
         {% endblock %}
 
@@ -51,7 +59,7 @@
                             <div class="pull-left m-r-md mr-5">
                                 <a href="{{ path('app_home') }}"><i class="fa fa-globe text-navy mid-icon"></i></a>
                             </div>
-                            <h2> Bienvenue sur notre forum ! </h2>
+                            <h2> Bienvenue sur notre forum {% if app.user %} {{ app.user.username }} {% endif %}! </h2>
                             <span> Choisissez le topic de votre choix.</span>
                             {% endblock %}
                         </div>

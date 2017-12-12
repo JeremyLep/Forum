@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use AppBundle\Entity\Discussion;
 use AppBundle\Entity\Themes;
 use \DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 class ForumController extends Controller
@@ -130,15 +131,10 @@ class ForumController extends Controller
           ->getForm();
 
       $formAdd->handleRequest($request);
-
-      if ($formAdd->isSubmitted() && $formAdd->isValid()) {
+      $securityContext = $this->get('security.authorization_checker');
+      if ($formAdd->isSubmitted() && $formAdd->isValid() && $securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
         try {
-        // USE SESSION TO GET SESSION USER OBJECT //
-          $currUser   = $em
-            ->getRepository('UserBundle:User')
-            ->findOneBy(['id' => 1]);
-        // ---------------------------------------- //
-
+          $currUser   = $this->getUser();
           $formAdd    = $formAdd->getData();
           $discussion = new Discussion();
           $discussion->setContenu($formAdd['discussion']);
@@ -176,6 +172,10 @@ class ForumController extends Controller
       ));
     }
 
+/**
+ *
+ * @Security("has_role('ROLE_MODO')")
+ */
     public function editDiscussionAction(Request $request, $theme, $id)
     {
       $em         = $this->getDoctrine()->getManager();
@@ -198,8 +198,8 @@ class ForumController extends Controller
           ->getForm();
 
       $formEdit->handleRequest($request);
-
-      if ($formEdit->isSubmitted() && $formEdit->isValid()) {
+      $securityContext = $this->get('security.authorization_checker');
+      if ($formEdit->isSubmitted() && $formEdit->isValid() && $securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
         try {
           $formEdit    = $formEdit->getData();
           $discussion->setContenu($formEdit['discussion']);
@@ -221,6 +221,8 @@ class ForumController extends Controller
             'id'  => $discussion->getId(),
           ));
         }
+      } else {
+        $this->denyAccessUnlessGranted('ROLE_USER', $id, 'Vous ne pouvez pas editer cet élément.');
       }
 
       return $this->render('AppBundle:Forum:editDiscussion.html.twig', array(
@@ -230,6 +232,10 @@ class ForumController extends Controller
       ));
     }
 
+/**
+ *
+ * @Security("has_role('ROLE_MODO')")
+ */
     public function removeDiscussionAction(Request $request, $theme, $id)
     {
       $em         = $this->getDoctrine()->getManager();
@@ -252,10 +258,9 @@ class ForumController extends Controller
           ->getForm();
 
       $formRemove->handleRequest($request);
-
-      if ($formRemove->isSubmitted() && $formRemove->isValid()) {
+      $securityContext = $this->get('security.authorization_checker');
+      if ($formRemove->isSubmitted() && $formRemove->isValid() && $securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
         try {
-
           $theme->removeDiscussion($discussion);
           $em->remove($discussion);
           $em->persist($theme);
@@ -276,6 +281,8 @@ class ForumController extends Controller
             'id'    => $id,
           ));
         }
+      } else {
+        $this->denyAccessUnlessGranted('ROLE_USER', $id, 'Vous ne pouvez pas ajouter cet élément.');
       }
 
       return $this->render('AppBundle:Forum:editDiscussion.html.twig', array(
@@ -285,6 +292,10 @@ class ForumController extends Controller
       ));
     }
 
+    /**
+     *
+     * @Security("has_role('ROLE_USER')")
+     */  
     public function profilAction($id, Request $request)
     {
       $em     = $this->getDoctrine()->getManager();

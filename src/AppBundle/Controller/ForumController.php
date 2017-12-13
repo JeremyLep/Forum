@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use AppBundle\Entity\Discussion;
 use AppBundle\Entity\Themes;
+use UserBundle\Form\EditUserType;
 use \DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Role\Role;
@@ -414,33 +415,61 @@ class ForumController extends Controller
       }
 
       $roleAdmin = new Role('ROLE_ADMIN');
-      $roleModo = new Role('ROLE_MODO');
-      $roleUser = new Role('ROLE_USER');
+      $roleModo  = new Role('ROLE_MODO');
+      $roleUser  = new Role('ROLE_USER');
 
       $formEditUser = $this->createFormBuilder()
-        ->add('username', TextType::class, array('data' => $user->getUsername()))
-        ->add('email', EmailType::class, array('data' => $user->getEmail()))
-        ->add('nom', TextType::class, array('data' => $user->getNom()))
-        ->add('prenom', TextType::class, array('data' => $user->getPrenom()))
-        ->add('avatar', TextType::class, array('data' => $user->getAvatar()))
-        ->add('roles', ChoiceType::class, array('choices' => ["Admin" => $roleAdmin, "Moderateur" => $roleModo, "User" => $roleUser]))
-        ->add('submit', SubmitType::class, array(
-          'label' => 'Envoyer',
-          'attr' => array('class' => 'btn btn-primary')
-        ))
-        ->getForm();
+      ->add('username', TextType::class, array('data' => $user->getUsername()))
+      ->add('email', EmailType::class, array('data' => $user->getEmail()))
+      ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
+      ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
+      ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+      ->add('submit', SubmitType::class, array(
+                'label' => 'Envoyer',
+                'attr' => array('class' => 'btn btn-primary')
+      ))
+      ->getForm();
+
+      if ($security->isGranted('ROLE_ADMIN')) {
+          $formEditUser = $this->createFormBuilder()
+            ->add('username', TextType::class, array('data' => $user->getUsername()))
+            ->add('email', EmailType::class, array('data' => $user->getEmail()))
+            ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
+            ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
+            ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+            ->add('roles', ChoiceType::class, array('choices' => ["Admin" => $roleAdmin, "Moderateur" => $roleModo, "User" => $roleUser]))
+            ->add('submit', SubmitType::class, array(
+              'label' => 'Envoyer',
+              'attr' => array('class' => 'btn btn-primary')
+            ))
+            ->getForm();
+        } else {
+          $formEditUser = $this->createFormBuilder()
+            ->add('username', TextType::class, array('data' => $user->getUsername()))
+            ->add('email', EmailType::class, array('data' => $user->getEmail()))
+            ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
+            ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
+            ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+            ->add('submit', SubmitType::class, array(
+                      'label' => 'Envoyer',
+                      'attr' => array('class' => 'btn btn-primary')
+            ))
+            ->getForm();
+        }
 
       $formEditUser->handleRequest($request);
-      if ($formEditUser->isSubmitted() && $formEditUser->isValid() && $security->isGranted('IS_AUTHENTICATED_FULLY')) {
+      if ($formEditUser->isSubmitted() && $formEditUser->isValid() && $security->isGranted('ROLE_MODO')) {
         try {
           $formEditUser = $formEditUser->getData();
-          $role = array($formEditUser['roles']->getRole() => $formEditUser['roles']->getRole() );
+          $role = array($formEditUser['roles']->getRole() => $formEditUser['roles']->getRole());
           $user->setUsername($formEditUser['username']);
           $user->setEmail($formEditUser['email']);
           $user->setNom($formEditUser['nom']);
           $user->setPrenom($formEditUser['prenom']);
           $user->setAvatar($formEditUser['avatar']);
-          $user->setRoles($role);
+          if ($security->isGranted('ROLE_ADMIN')) {
+            $user->setRoles($role);
+          }
 
           $userManager->updateUser($user, false);
 

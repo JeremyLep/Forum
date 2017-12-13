@@ -37,12 +37,11 @@ class RegistrationType extends AbstractType
             'invalid_message' => 'fos_user.password.mismatch',
             
         ))
-        ->add('nom', TextType::class, array(
-            'attr' => array('required' => 'false')))
-        ->add('prenom', TextType::class)
-        ->add('avatar', TextType::class)
-        ->add('age', IntegerType::class)
-        ->add('ville', TextType::class)
+        ->add('nom', TextType::class, array('required' => false))
+        ->add('prenom', TextType::class, array('required' => false))
+        ->add('avatar', TextType::class, array('required' => false))
+        ->add('age', IntegerType::class, array('required' => false))
+        ->add('ville', TextType::class, array('required' => false))
         ->add('submit', SubmitType::class);
     }
     

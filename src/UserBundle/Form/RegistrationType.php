@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
 
 class RegistrationType extends AbstractType
 {
@@ -42,6 +43,10 @@ class RegistrationType extends AbstractType
         ->add('avatar', TextType::class, array('required' => false))
         ->add('age', IntegerType::class, array('required' => false))
         ->add('ville', TextType::class, array('required' => false))
+        ->add('captchaCode', CaptchaType::class, array(
+            'captchaConfig' => 'RegisterCaptcha',
+            'label' => 'Recopier les caractères de la photo'
+        ))
         ->add('submit', SubmitType::class);
     }
     

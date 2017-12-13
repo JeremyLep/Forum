@@ -52,6 +52,12 @@
 		  	{{ form_widget(form.ville, {'attr': {'class': 'form-control'}}) }}
 		</div>
 
+		{{ form_label(form.ville, "Captcha", {'label_attr': {'class': 'pt-3 col-sm-12 control-label'}}) }}
+		{{ form_errors(form.captchaCode) }}
+		<div class="col-sm-12">
+			{{ form_widget(form.captchaCode, {'attr': {'class': 'form-control'}}) }}
+		</div>
+
 		<div class="col-lg-12 p-2">
 			{{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary', 'value': 'Valider'}}) }}
 		</div>

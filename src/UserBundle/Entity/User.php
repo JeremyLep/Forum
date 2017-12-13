@@ -4,6 +4,8 @@ namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as FosUser;
+use Captcha\Bundle\CaptchaBundle\Validator\Constraints as CaptchaAssert;
+
 /**
  * User
  *
@@ -69,6 +71,13 @@ class User extends FosUser
      * @ORM\Column(name="ville", type="string", nullable=true)
      */
     protected $ville;
+
+    /**
+     * @CaptchaAssert\ValidCaptcha(
+     *      message = "Le contrôle de sécurité n'a pas été validé. Veuillez réessayer."
+     * )
+     */
+    protected $captchaCode;
 
     /**
      * @var boolean
@@ -269,6 +278,16 @@ class User extends FosUser
     public function getVille()
     {
         return $this->ville;
+    }
+
+    public function getCaptchaCode()
+    {
+        return $this->captchaCode;
+    }
+
+    public function setCaptchaCode($captchaCode)
+    {
+        $this->captchaCode = $captchaCode;
     }
 
     /**

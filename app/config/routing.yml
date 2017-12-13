@@ -4,3 +4,6 @@ app_home:
 
 fos_user:
     resource: "@UserBundle/Resources/config/routing.yml"
+
+captcha_routing:
+  resource: "@CaptchaBundle/Resources/config/routing.yml"

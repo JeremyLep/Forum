@@ -41,6 +41,7 @@
 				<th scope="col">Date d'inscription</th>
 		      	<th scope="col">Avatar</th>
 		      	<th scope="col">Role</th>
+		      	<th scope="col">Edit</th>
 	      	</tr>
         </thead>
 		<tbody class="">
@@ -54,6 +55,12 @@
 				<td>{{ user.dateInscription|date('d-m-Y') }}</td>
 				<td>{{ user.avatar }}</td>
 				<td>{{ user.roles[0] }}</td>
+				<td>
+					<a href="{{ path('app_list_user_edit', {'id': user.id}) }}" class="btn btn-primary smallBtn a-btn-slide-text">
+						<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+				        <span><strong>Edit</strong></span>            
+		    		</a>
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>

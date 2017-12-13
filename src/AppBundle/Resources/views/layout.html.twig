@@ -32,13 +32,21 @@
                 {% endif %}
                 {% if app.user %}
                 <div class="btn-group float-right">
-                  <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 49px; width:100px; border-radius: 0;">
-                    <p class="m-0"><i class="fa fa-user text-white" style="font-size:20px;"></i></p>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{{ path('app_profil', {'id': app.user.id}) }}"><button class="dropdown-item" type="button">Profil</button></a>
-                    <a href="{{ path('fos_user_security_logout') }}"><button class="dropdown-item" type="button">Déconnexion</button></a>
-                  </div>
+                    {% if is_granted('ROLE_MODO') %}
+                    <a href="{{ path('app_list_user') }}">
+                        <button type="button" class="btn btn-secondary" style="height: 49px; width:200px; border-radius: 0; font-size: 0.9rem;">
+                            <p class="pt-1"><i class="fa fa-group text-white pr-3" style="font-size:20px;"></i>Liste des membres</p>
+                        </button>
+                    </a>
+                    {% endif %}
+                    <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 49px; width:100px; border-radius: 0;">
+                        <p class="m-0"><i class="fa fa-user text-white" style="font-size:20px;"></i></p>
+                    </button>
+                  
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="{{ path('app_profil', {'id': app.user.id}) }}"><button class="dropdown-item" type="button">Profil</button></a>
+                        <a href="{{ path('fos_user_security_logout') }}"><button class="dropdown-item" type="button">Déconnexion</button></a>
+                    </div>
                 </div>
                 {% endif %}
             </div>

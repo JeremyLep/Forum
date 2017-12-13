@@ -1,0 +1,72 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block flashbag %}
+	{% for message in app.session.flashbag.get('success') %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        	<span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% block title %}
+<div class="pull-left m-r-md mr-5">
+    <a href="{{ path(app.request.get('_route')) }}"><i class="fa fa-users text-navy mid-icon" aria-hidden="true"></i></a>
+</div>
+<h2>Liste des membres du forum</h2>
+{% endblock %}
+
+{% block breadcrum %}
+<div class="ibox-content mb-1 mt-1 p-10">
+	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path(app.request.get('_route')) }}"> Liste membres </a></p>
+</div>
+{% endblock %}
+
+{% block paginator %}
+{% endblock %}
+
+{% block content %}
+<div class="ibox-content forum-container">
+	<h4 class="pb-3">Liste des membres</h4>
+    <table class="table">
+        <thead>
+          	<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Identifiant</th>
+				<th scope="col">Email</th>
+				<th scope="col">Nom</th>
+				<th scope="col">Prénom</th>
+				<th scope="col">Date d'inscription</th>
+		      	<th scope="col">Avatar</th>
+		      	<th scope="col">Role</th>
+		      	<th scope="col">Edit</th>
+	      	</tr>
+        </thead>
+		<tbody class="">
+			{% for user in users %}
+			<tr>
+				<th scope="row">{{ user.id }}</th>
+				<td>{{ user.username }}</td>
+				<td>{{ user.email }}</td>
+				<td>{{ user.nom }}</td>
+				<td>{{ user.prenom }}</td>
+				<td>{{ user.dateInscription|date('d-m-Y') }}</td>
+				<td>{{ user.avatar }}</td>
+				<td>{{ user.roles[0] }}</td>
+				<td>
+					<a href="{{ path('app_list_user_edit', {'id': user.id}) }}" class="btn btn-primary smallBtn a-btn-slide-text">
+						<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+				        <span><strong>Edit</strong></span>            
+		    		</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}
+
+{% block paginatorBot %}
+{% endblock %}

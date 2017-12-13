@@ -12,10 +12,15 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use AppBundle\Entity\Discussion;
 use AppBundle\Entity\Themes;
+use UserBundle\Form\EditUserType;
 use \DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Core\Role\Role;
+
 
 
 class ForumController extends Controller
@@ -81,7 +86,7 @@ class ForumController extends Controller
         ));
       }
     }
-
+    
     return $this->render('AppBundle:Forum:index.html.twig', array(
       'themes'      => $themes,
       'infosThemes' => $infosThemes,
@@ -195,7 +200,7 @@ class ForumController extends Controller
       $formEdit = $this
           ->createFormBuilder()
           ->add('discussion', TextareaType::class, array(
-          'data' => $discussion->getContenu()))
+            'data' => $discussion->getContenu()))
           ->add('submit', SubmitType::class, array(
             'label' => 'Envoyer',
             'attr' => array('class' => 'btn btn-primary'),
@@ -294,7 +299,7 @@ class ForumController extends Controller
       return $this->render('AppBundle:Forum:editDiscussion.html.twig', array(
         'discussion' => $discussion,
         'theme'      => $theme,
-        'formEdit' => $formRemove->createView(),
+        'formEdit'   => $formRemove->createView(),
       ));
     }
 
@@ -372,6 +377,123 @@ class ForumController extends Controller
         'days'          => $days,
         'id'            => $id,
         'form'          => $form->createView(),
+      ));
+    }
+
+    /**
+     *
+     * @Security("has_role('ROLE_MODO')")
+     */  
+    public function listUserAction(Request $request)
+    {
+      $em    = $this->getDoctrine()->getManager();
+      $users = $em
+        ->getRepository('UserBundle:User')
+        ->findAll();
+
+      return $this->render('AppBundle:Forum:listUser.html.twig', array(
+        'users' => $users,
+      ));
+    }
+
+    public function listEditUserAction(Request $request, $id)
+    {
+      $currUser    = $this->getUser();
+      $userManager = $this->get('fos_user.user_manager');
+      $security    = $this->get('security.authorization_checker');
+      $em          = $this->getDoctrine()->getManager();
+
+      $user = $em
+        ->getRepository('UserBundle:User')
+        ->findOneBy(['id' => $id]);
+
+      if (($security->isGranted('ROLE_MODO')) or ($user->isAuthor($currUser))) {
+           
+      }
+      else {
+        throw $this->createAccessDeniedException('Vous n\'etes pas autorisé à accéder à cette page !');
+      }
+
+      $roleAdmin = new Role('ROLE_ADMIN');
+      $roleModo  = new Role('ROLE_MODO');
+      $roleUser  = new Role('ROLE_USER');
+
+      $formEditUser = $this->createFormBuilder()
+      ->add('username', TextType::class, array('data' => $user->getUsername()))
+      ->add('email', EmailType::class, array('data' => $user->getEmail()))
+      ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
+      ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
+      ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+      ->add('submit', SubmitType::class, array(
+                'label' => 'Envoyer',
+                'attr' => array('class' => 'btn btn-primary')
+      ))
+      ->getForm();
+
+      if ($security->isGranted('ROLE_ADMIN')) {
+          $formEditUser = $this->createFormBuilder()
+            ->add('username', TextType::class, array('data' => $user->getUsername()))
+            ->add('email', EmailType::class, array('data' => $user->getEmail()))
+            ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
+            ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
+            ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+            ->add('roles', ChoiceType::class, array('choices' => ["Admin" => $roleAdmin, "Moderateur" => $roleModo, "User" => $roleUser]))
+            ->add('submit', SubmitType::class, array(
+              'label' => 'Envoyer',
+              'attr' => array('class' => 'btn btn-primary')
+            ))
+            ->getForm();
+        } else {
+          $formEditUser = $this->createFormBuilder()
+            ->add('username', TextType::class, array('data' => $user->getUsername()))
+            ->add('email', EmailType::class, array('data' => $user->getEmail()))
+            ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
+            ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
+            ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+            ->add('submit', SubmitType::class, array(
+                      'label' => 'Envoyer',
+                      'attr' => array('class' => 'btn btn-primary')
+            ))
+            ->getForm();
+        }
+
+      $formEditUser->handleRequest($request);
+      if ($formEditUser->isSubmitted() && $formEditUser->isValid() && $security->isGranted('ROLE_MODO')) {
+        try {
+          $formEditUser = $formEditUser->getData();
+          $role = array($formEditUser['roles']->getRole() => $formEditUser['roles']->getRole());
+          $user->setUsername($formEditUser['username']);
+          $user->setEmail($formEditUser['email']);
+          $user->setNom($formEditUser['nom']);
+          $user->setPrenom($formEditUser['prenom']);
+          $user->setAvatar($formEditUser['avatar']);
+          if ($security->isGranted('ROLE_ADMIN')) {
+            $user->setRoles($role);
+          }
+
+          $userManager->updateUser($user, false);
+
+          $em->flush();
+
+          $request->getSession()->getFlashBag()->add('notice', 'Le profil bien modifié.');
+
+          return $this->redirectToRoute('app_list_user_edit', array(
+            'id'  => $user->getId(),
+          ));
+        } catch (\Exception $exc) {
+          $request->getSession()->getFlashBag()->add('notice', 'Le profil n\'a pas pu être modifié.');
+
+          return $this->redirectToRoute('app_list_user_edit', array(
+            'id'  => $user->getId(),
+          ));
+        }
+      } else {
+        $this->denyAccessUnlessGranted('ROLE_USER', $id, 'Vous ne pouvez pas editer cet élément.');
+      }
+
+      return $this->render('AppBundle:Forum:editUser.html.twig', array(
+        'user'         => $user,
+        'formEditUser' => $formEditUser->createView(),
       ));
     }
 }

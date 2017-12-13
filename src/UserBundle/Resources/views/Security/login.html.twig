@@ -12,6 +12,7 @@
     {{ include('@FOSUser/Security/login_content.html.twig') }}
 	<div class="pull-left">
 		<small class="forum-desc"><a href="{{ path('fos_user_registration_register') }}">Vous n'avez pas de compte ?</a> </small>
+		<small class="forum-desc"><a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié ?</a> </small>
 	</div>
 {% endblock fos_user_content %}
 

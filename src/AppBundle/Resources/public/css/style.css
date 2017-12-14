@@ -9,6 +9,10 @@ a, a:hover{
   color: inherit;
 }
 
+.font0-8rem{
+  font-size: 0.8rem;
+}
+
 .container{
   margin-top:20px;
 }

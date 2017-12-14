@@ -72,7 +72,7 @@ class ForumController extends Controller
         
         $em->persist($theme);
         $em->flush();
-
+        
         $request->getSession()->getFlashBag()->add('notice', 'Le thème est bien enregistré.');
 
         return $this->redirectToRoute('app_home', array(
@@ -80,7 +80,7 @@ class ForumController extends Controller
         ));
       } catch (\Exception $exc) {
         $request->getSession()->getFlashBag()->add('notice', 'Le thème n\'a pas pu être enregistré.');
-
+        
         return $this->redirectToRoute('app_home', array(
           'page'  => 1,
         ));

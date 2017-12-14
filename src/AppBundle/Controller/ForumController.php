@@ -42,7 +42,7 @@ class ForumController extends Controller
     $infosThemes = $em
       ->getRepository('AppBundle:Discussion')
       ->getInfoTheme($page, $nbPerPage);
-      
+
     $nbDisc = $em
       ->getRepository('AppBundle:Discussion')
       ->getNbDiscussion(); 
@@ -380,6 +380,73 @@ class ForumController extends Controller
       ));
     }
 
+
+    public function editProfilAction(Request $request, $id)
+    {
+      $currUser    = $this->getUser();
+      $userManager = $this->get('fos_user.user_manager');
+      $security    = $this->get('security.authorization_checker');
+      $em          = $this->getDoctrine()->getManager();
+
+      $user = $em
+        ->getRepository('UserBundle:User')
+        ->findOneBy(['id' => $id]);
+
+      if (!$user->isAuthor($currUser)) {
+        throw $this->createAccessDeniedException('Vous n\'etes pas autorisé à accéder à cette page !');
+      }
+
+      if ($security->isGranted('ROLE_USER')) {
+          $formEditProfil = $this->createFormBuilder()
+            ->add('username', TextType::class, array('data' => $user->getUsername()))
+            ->add('email', EmailType::class, array('data' => $user->getEmail()))
+            ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
+            ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
+            ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+            ->add('submit', SubmitType::class, array(
+                      'label' => 'Envoyer',
+                      'attr' => array('class' => 'btn btn-primary')
+            ))
+            ->getForm();
+      }
+
+      $formEditProfil->handleRequest($request);
+      if ($formEditProfil->isSubmitted() && $formEditProfil->isValid() && $security->isGranted('ROLE_USER')) {
+        try {
+          $formEditProfil = $formEditProfil->getData();
+          $user->setUsername($formEditProfil['username']);
+          $user->setEmail($formEditProfil['email']);
+          $user->setNom($formEditProfil['nom']);
+          $user->setPrenom($formEditProfil['prenom']);
+          $user->setAvatar($formEditProfil['avatar']);
+
+
+          $userManager->updateUser($user, false);
+
+          $em->flush();
+
+          $request->getSession()->getFlashBag()->add('notice', 'Le profil bien modifié.');
+
+          return $this->redirectToRoute('app_profil', array(
+            'id'  => $user->getId(),
+          ));
+        } catch (\Exception $exc) {
+          $request->getSession()->getFlashBag()->add('notice', 'Le profil n\'a pas pu être modifié.');
+
+          return $this->redirectToRoute('app_profil', array(
+            'id'  => $user->getId(),
+          ));
+        }
+      } else {
+        $this->denyAccessUnlessGranted('ROLE_USER', $id, 'Vous ne pouvez pas editer cet élément.');
+      }
+
+      return $this->render('AppBundle:Forum:editProfil.html.twig', array(
+        'user'         => $user,
+        'formEditProfil' => $formEditProfil->createView(),
+      ));
+    }
+
     /**
      *
      * @Security("has_role('ROLE_MODO')")
@@ -417,18 +484,6 @@ class ForumController extends Controller
       $roleAdmin = new Role('ROLE_ADMIN');
       $roleModo  = new Role('ROLE_MODO');
       $roleUser  = new Role('ROLE_USER');
-
-      $formEditUser = $this->createFormBuilder()
-      ->add('username', TextType::class, array('data' => $user->getUsername()))
-      ->add('email', EmailType::class, array('data' => $user->getEmail()))
-      ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
-      ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
-      ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
-      ->add('submit', SubmitType::class, array(
-                'label' => 'Envoyer',
-                'attr' => array('class' => 'btn btn-primary')
-      ))
-      ->getForm();
 
       if ($security->isGranted('ROLE_ADMIN')) {
           $formEditUser = $this->createFormBuilder()

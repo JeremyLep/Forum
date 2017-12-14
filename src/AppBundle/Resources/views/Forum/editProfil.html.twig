@@ -1,0 +1,72 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block flashbag %}
+	{% for message in app.session.flashbag.get('notice') %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        	<span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% block title %}
+<div class="pull-left m-r-md mr-5">
+    <a href="{{ path('app_profil', {'id': user.id}) }}"><i class="fa fa-group text-navy mid-icon"></i></a>
+</div>
+<h2> Modifier le profil {{ user.prenom }} {{ user.nom }}</h2>
+<small class="forum-desc">Vous êtes sur le point de modifier le profil de {{ user.username }}</small>
+{% endblock %}
+
+{% block breadcrum %}
+<div class="ibox-content mb-1 mt-1 p-10">
+	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path('app_profil', {'id': user.id}) }}"> Liste membre </a> ><a href="{{ path(app.request.get('_route'), {'id': user.id}) }}"> {{ user.id }}</a></p>
+</div>
+{% endblock %}
+
+{% block paginator %}
+{% endblock %}
+
+{% block content %}
+<div class="ibox-content forum-container">
+{{ form_start(formEditProfil, {'attr': {'class': 'form-horizontal'}}) }}
+    {{ form_errors(formEditProfil) }}
+	<div class="form-group col-lg-12 m-0">
+		{{ form_label(formEditProfil.username, "Indentifiant", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+		{{ form_errors(formEditProfil.username) }}
+		<div class="col-sm-12">
+		  	{{ form_widget(formEditProfil.username, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		{{ form_label(formEditProfil.email, "Email", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+		{{ form_errors(formEditProfil.email) }}
+		<div class="col-sm-12">
+		  	{{ form_widget(formEditProfil.email, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		{{ form_label(formEditProfil.nom, "Nom", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+		{{ form_errors(formEditProfil.nom) }}
+		<div class="col-sm-12">
+		  	{{ form_widget(formEditProfil.nom, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		{{ form_label(formEditProfil.prenom, "Prénom", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+		{{ form_errors(formEditProfil.prenom) }}
+		<div class="col-sm-12">
+		  	{{ form_widget(formEditProfil.prenom, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		{{ form_label(formEditProfil.avatar, "Avatar", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+		{{ form_errors(formEditProfil.avatar) }}
+		<div class="col-sm-12">
+		  	{{ form_widget(formEditProfil.avatar, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		<div class="col-lg-12 p-2">
+			{{ form_widget(formEditProfil.submit) }}
+			<a href="{{ path('app_profil', {'id': user.id}) }}" class="btn btn-secondary" role="button">Annuler</a>
+		</div>
+	</div>
+	{{ form_rest(formEditProfil) }}
+{{ form_end(formEditProfil) }}
+</div>
+{% endblock %}
+
+{% block paginatorBot %}
+{% endblock %}

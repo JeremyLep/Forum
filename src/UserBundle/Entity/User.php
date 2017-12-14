@@ -5,6 +5,8 @@ namespace UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as FosUser;
 use Captcha\Bundle\CaptchaBundle\Validator\Constraints as CaptchaAssert;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * User
@@ -27,6 +29,7 @@ class User extends FosUser
      * @var string
      *
      * @ORM\Column(name="nom", type="string", nullable=true)
+     * @Assert\Length(min=2)
      */
     protected $nom;
 
@@ -34,6 +37,7 @@ class User extends FosUser
      * @var string
      *
      * @ORM\Column(name="prenom", type="string", nullable=true)
+     * @Assert\Length(min=2)
      */
     protected $prenom;
 
@@ -48,6 +52,7 @@ class User extends FosUser
      * @var \DateTime
      *
      * @ORM\Column(name="date_inscription", type="datetime", nullable=false)
+     * @Assert\DateTime()
      */
     protected $dateInscription;
 
@@ -55,6 +60,7 @@ class User extends FosUser
      * @var integer
      *
      * @ORM\Column(name="age", type="integer", nullable=true)
+     * @Assert\Range(min=5, max=99)
      */
     protected $age;
 
@@ -62,6 +68,7 @@ class User extends FosUser
      * @var string
      *
      * @ORM\Column(name="tel", type="string", nullable=true)
+     * @Assert\Regex(pattern="(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}", message="Le numero de téléphone doit etre au format français.")
      */
     protected $tel;
 
@@ -69,6 +76,7 @@ class User extends FosUser
      * @var string
      *
      * @ORM\Column(name="ville", type="string", nullable=true)
+     * @Assert\Length(min=3)
      */
     protected $ville;
 

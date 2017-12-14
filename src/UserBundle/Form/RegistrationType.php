@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class RegistrationType extends AbstractType
 {
@@ -40,7 +41,7 @@ class RegistrationType extends AbstractType
         ))
         ->add('nom', TextType::class, array('required' => false))
         ->add('prenom', TextType::class, array('required' => false))
-        ->add('avatar', TextType::class, array('required' => false))
+        ->add('avatar', FileType::class, array('required' => false))
         ->add('age', IntegerType::class, array('required' => false))
         ->add('ville', TextType::class, array('required' => false))
         ->add('captchaCode', CaptchaType::class, array(

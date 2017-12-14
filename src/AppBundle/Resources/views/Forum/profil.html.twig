@@ -82,6 +82,10 @@
 			      <td>{{ profil.ville }}</td>
 			    </tr>
 			    <tr>
+			      <td>Avatar</td>
+			      <td><img src="{{ asset('bundles/app/images/'~profil.avatar) }}" height="35" width="35"></td>
+			    </tr>
+			    <tr>
 			      <td>Date d'inscription</td>
 			      <td>{{ profil.dateInscription|date }}</td>
 			    </tr>
@@ -89,6 +93,7 @@
 			</table>
 			{% if profil.isAuthor(app.user) %}
 			<a class="btn btn-danger text-center" href="{{ path('fos_user_change_password') }}">Modifier votre mot de passe</a>
+			<a class="btn btn-primary text-center" href="{{ path('app_edit_profil', {'id': profil.id}) }}">Modifier votre profil</a>
 			{% endif %}
 		</div>
 

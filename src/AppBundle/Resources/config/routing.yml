@@ -11,8 +11,14 @@ app_profil:
     defaults:
         _controller: AppBundle:Forum:profil
     requirements:
-        page: '\d+'
+        id: '\d+'
 
+app_edit_profil:
+    path:      /profil/edit/{id}
+    defaults:
+        _controller: AppBundle:Forum:editProfil
+    requirements:
+        id: '\d+'
 
 app_discussion:
     path:      /theme/{theme}/{page}

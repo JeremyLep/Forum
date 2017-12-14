@@ -44,7 +44,13 @@ class User extends FosUser
     /**
      * @var string
      *
-     * @ORM\Column(name="avatar", type="string", nullable=true)
+     * @ORM\Column(name="avatar", nullable=true)
+     * @Assert\File(
+     *     maxSize = "5M",
+     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
+     *     maxSizeMessage = "La taille maximal d'un avatar est de 5MB.",
+     *     mimeTypesMessage = "Seulement des fichier de type image sont autorisé (jpg, png, tiff, gif)"
+     * )
      */
     protected $avatar;
 
@@ -240,13 +246,6 @@ class User extends FosUser
         return $this->tel;
     }
 
-    /**
-     * Set avatar
-     *
-     * @param string $avatar
-     *
-     * @return User
-     */
     public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
@@ -254,11 +253,7 @@ class User extends FosUser
         return $this;
     }
 
-    /**
-     * Get avatar
-     *
-     * @return string
-     */
+
     public function getAvatar()
     {
         return $this->avatar;

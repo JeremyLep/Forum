@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use AppBundle\Entity\Discussion;
 use AppBundle\Entity\Themes;
 use UserBundle\Form\EditUserType;
@@ -63,18 +64,17 @@ class ForumController extends Controller
     $formAdd->handleRequest($request);
 
     if ($formAdd->isSubmitted() && $formAdd->isValid()) {
-      if ($formAdd->isValid()) {
-        try {
-          $formAdd = $formAdd->getData();
-          $theme   = new Themes();
-          $theme->setTitre($formAdd['titre']);
-          $theme->setSousTitre($formAdd['soustitre']);
-          $theme->setNbDiscussion(0);
-          
-          $em->persist($theme);
-          $em->flush();
-
-          $request->getSession()->getFlashBag()->add('notice', 'Le thème est bien enregistré.');
+      try {
+        $formAdd = $formAdd->getData();
+        $theme   = new Themes();
+        $theme->setTitre($formAdd['titre']);
+        $theme->setSousTitre($formAdd['soustitre']);
+        $theme->setNbDiscussion(0);
+        
+        $em->persist($theme);
+        $em->flush();
+        
+        $request->getSession()->getFlashBag()->add('notice', 'Le thème est bien enregistré.');
 
           return $this->redirectToRoute('app_home', array(
             'page'  => 1,
@@ -382,6 +382,79 @@ class ForumController extends Controller
       ));
     }
 
+
+    public function editProfilAction(Request $request, $id)
+    {
+      $currUser    = $this->getUser();
+      $userManager = $this->get('fos_user.user_manager');
+      $security    = $this->get('security.authorization_checker');
+      $em          = $this->getDoctrine()->getManager();
+
+      $user = $em
+        ->getRepository('UserBundle:User')
+        ->findOneBy(['id' => $id]);
+
+      if (!$user->isAuthor($currUser)) {
+        throw $this->createAccessDeniedException('Vous n\'etes pas autorisé à accéder à cette page !');
+      }
+
+      if ($security->isGranted('ROLE_USER')) {
+          $formEditProfil = $this->createFormBuilder()
+            ->add('username', TextType::class, array('data' => $user->getUsername()))
+            ->add('email', EmailType::class, array('data' => $user->getEmail()))
+            ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
+            ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
+            ->add('age', TextType::class, array('data' => $user->getAge(), 'required' => false))
+            ->add('tel', TextType::class, array('data' => $user->getTel(), 'required' => false))
+            ->add('ville', TextType::class, array('data' => $user->getVille(), 'required' => false))
+            ->add('avatar', FileType::class, array('required' => false))
+            ->add('submit', SubmitType::class, array(
+                      'label' => 'Envoyer',
+                      'attr' => array('class' => 'btn btn-primary')
+            ))
+            ->getForm();
+      }
+
+      $formEditProfil->handleRequest($request);
+      if ($formEditProfil->isSubmitted() && $formEditProfil->isValid() && $security->isGranted('ROLE_USER')) {
+        try {
+          $formEditProfil = $formEditProfil->getData();
+          $user->setUsername($formEditProfil['username']);
+          $user->setEmail($formEditProfil['email']);
+          $user->setNom($formEditProfil['nom']);
+          $user->setPrenom($formEditProfil['prenom']);
+          $user->setAge($formEditProfil['age']);
+          $user->setTel($formEditProfil['tel']);
+          $user->setVille($formEditProfil['ville']);
+          $user->setAvatar($formEditProfil['avatar']);
+
+
+          $userManager->updateUser($user, false);
+
+          $em->flush();
+
+          $request->getSession()->getFlashBag()->add('notice', 'Le profil à bien été modifié.');
+
+          return $this->redirectToRoute('app_edit_profil', array(
+            'id'  => $user->getId(),
+          ));
+        } catch (\Exception $exc) {
+          $request->getSession()->getFlashBag()->add('notice', 'Le profil n\'a pas pu être modifié.');
+
+          return $this->redirectToRoute('app_profil', array(
+            'id'  => $user->getId(),
+          ));
+        }
+      } else {
+        $this->denyAccessUnlessGranted('ROLE_USER', $id, 'Vous ne pouvez pas editer cet élément.');
+      }
+
+      return $this->render('AppBundle:Forum:editProfil.html.twig', array(
+        'user'         => $user,
+        'formEditProfil' => $formEditProfil->createView(),
+      ));
+    }
+
     /**
      *
      * @Security("has_role('ROLE_MODO')")
@@ -420,25 +493,13 @@ class ForumController extends Controller
       $roleModo  = new Role('ROLE_MODO');
       $roleUser  = new Role('ROLE_USER');
 
-      $formEditUser = $this->createFormBuilder()
-      ->add('username', TextType::class, array('data' => $user->getUsername()))
-      ->add('email', EmailType::class, array('data' => $user->getEmail()))
-      ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
-      ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
-      ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
-      ->add('submit', SubmitType::class, array(
-                'label' => 'Envoyer',
-                'attr' => array('class' => 'btn btn-primary')
-      ))
-      ->getForm();
-
       if ($security->isGranted('ROLE_ADMIN')) {
           $formEditUser = $this->createFormBuilder()
             ->add('username', TextType::class, array('data' => $user->getUsername()))
             ->add('email', EmailType::class, array('data' => $user->getEmail()))
             ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
             ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
-            ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+            ->add('avatar', FileType::class, array('required' => false))
             ->add('roles', ChoiceType::class, array('choices' => ["Admin" => $roleAdmin, "Moderateur" => $roleModo, "User" => $roleUser]))
             ->add('submit', SubmitType::class, array(
               'label' => 'Envoyer',
@@ -451,7 +512,7 @@ class ForumController extends Controller
             ->add('email', EmailType::class, array('data' => $user->getEmail()))
             ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
             ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
-            ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+            ->add('avatar', FileType::class, array('required' => false))
             ->add('submit', SubmitType::class, array(
                       'label' => 'Envoyer',
                       'attr' => array('class' => 'btn btn-primary')
@@ -483,7 +544,7 @@ class ForumController extends Controller
             'id'  => $user->getId(),
           ));
         } catch (\Exception $exc) {
-          $request->getSession()->getFlashBag()->add('notice', 'Le profil n\'a pas pu être modifié.');
+          $request->getSession()->getFlashBag()->add('notice', 'Le profil n\'a pas pu être modifié.'.$exc);
 
           return $this->redirectToRoute('app_list_user_edit', array(
             'id'  => $user->getId(),

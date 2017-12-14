@@ -28,10 +28,14 @@ class DiscussionRepository extends EntityRepository
 	public function getinfoTheme($page, $nbPerPage) {
 		$cnx = $this->getEntityManager()->getConnection();
 	    $query = <<<SQL
-        	SELECT max(d.date) AS date, m.username, d.theme_id
-			FROM discussion AS d, user AS m
-			WHERE d.auteur_id = m.id
-			GROUP BY d.theme_id
+        	SELECT d.theme_id, d.date, d.auteur_id, u.username
+			FROM (
+			   SELECT discussion.theme_id, discussion.auteur_id, MAX(discussion.date) AS date
+			   FROM discussion
+			   GROUP BY discussion.theme_id
+			) AS x INNER JOIN discussion AS d ON d.date = x.date
+			JOIN user u
+			   WHERE d.auteur_id = u.id;
 SQL;
 		return $cnx->fetchAll($query);
 	}

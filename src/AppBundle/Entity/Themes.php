@@ -5,14 +5,14 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\UniqueEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Themes
  *
  * @ORM\Table(name="themes")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ThemesRepository")
- * @UniqueEntity(fields="title", message="Un thème existe déjà avec ce titre.")
+ * @UniqueEntity(fields="titre", message="Un thème existe déjà avec ce titre.")
  */
 class Themes
 {
@@ -29,7 +29,7 @@ class Themes
      * @var string
      *
      * @ORM\Column(name="titre", type="string", length=200, nullable=false, unique=true)
-     * @Assert/Length(min=3,max=200)
+     * @Assert\Length(min=3, max=200)
      */
     private $titre;
 
@@ -37,7 +37,7 @@ class Themes
      * @var string
      *
      * @ORM\Column(name="sous_titre", type="string", length=500, nullable=true)
-     * @Assert/Length(min=3,max=500)
+     * @Assert\Length(min=3, max=500)
      */
     private $sousTitre;
 
@@ -45,7 +45,6 @@ class Themes
      * @var integer
      *
      * @ORM\Column(name="nb_discussion", type="integer", length=700, nullable=true)
-     * @Assert/Type(int)
      */
     private $nbDiscussion;
 

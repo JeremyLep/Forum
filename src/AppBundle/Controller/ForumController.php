@@ -63,27 +63,29 @@ class ForumController extends Controller
     $formAdd->handleRequest($request);
 
     if ($formAdd->isSubmitted() && $formAdd->isValid()) {
-      try {
-        $formAdd = $formAdd->getData();
-        $theme   = new Themes();
-        $theme->setTitre($formAdd['titre']);
-        $theme->setSousTitre($formAdd['soustitre']);
-        $theme->setNbDiscussion(0);
-        
-        $em->persist($theme);
-        $em->flush();
+      if ($formAdd->isValid()) {
+        try {
+          $formAdd = $formAdd->getData();
+          $theme   = new Themes();
+          $theme->setTitre($formAdd['titre']);
+          $theme->setSousTitre($formAdd['soustitre']);
+          $theme->setNbDiscussion(0);
+          
+          $em->persist($theme);
+          $em->flush();
 
-        $request->getSession()->getFlashBag()->add('notice', 'Le thème est bien enregistré.');
+          $request->getSession()->getFlashBag()->add('notice', 'Le thème est bien enregistré.');
 
-        return $this->redirectToRoute('app_home', array(
-          'page'  => 1,
-        ));
-      } catch (\Exception $exc) {
-        $request->getSession()->getFlashBag()->add('notice', 'Le thème n\'a pas pu être enregistré.');
+          return $this->redirectToRoute('app_home', array(
+            'page'  => 1,
+          ));
+        } catch (\Exception $exc) {
+          $request->getSession()->getFlashBag()->add('notice', 'Le thème n\'a pas pu être enregistré.');
 
-        return $this->redirectToRoute('app_home', array(
-          'page'  => 1,
-        ));
+          return $this->redirectToRoute('app_home', array(
+            'page'  => 1,
+          ));
+        }
       }
     }
     

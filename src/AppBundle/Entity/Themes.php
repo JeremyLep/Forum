@@ -28,7 +28,7 @@ class Themes
     /**
      * @var string
      *
-     * @ORM\Column(name="titre", type="string", length=300, nullable=false,)
+     * @ORM\Column(name="titre", type="string", length=200, nullable=false, unique=true)
      * @Assert\Length(min=3, max=200)
      */
     private $titre;
@@ -36,7 +36,7 @@ class Themes
     /**
      * @var string
      *
-     * @ORM\Column(name="sous_titre", type="string", length=700, nullable=true)
+     * @ORM\Column(name="sous_titre", type="string", length=500, nullable=true)
      * @Assert\Length(min=3, max=500)
      */
     private $sousTitre;

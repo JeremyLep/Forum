@@ -42,7 +42,7 @@ class ForumController extends Controller
     $infosThemes = $em
       ->getRepository('AppBundle:Discussion')
       ->getInfoTheme($page, $nbPerPage);
-
+      
     $nbDisc = $em
       ->getRepository('AppBundle:Discussion')
       ->getNbDiscussion(); 
@@ -80,7 +80,7 @@ class ForumController extends Controller
         ));
       } catch (\Exception $exc) {
         $request->getSession()->getFlashBag()->add('notice', 'Le thème n\'a pas pu être enregistré.');
-        
+
         return $this->redirectToRoute('app_home', array(
           'page'  => 1,
         ));

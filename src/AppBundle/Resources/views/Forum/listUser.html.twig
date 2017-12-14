@@ -53,7 +53,7 @@
 				<td class="font0-8rem">{{ user.nom }}</td>
 				<td class="font0-8rem">{{ user.prenom }}</td>
 				<td class="font0-8rem">{{ user.dateInscription|date('d-m-Y') }}</td>
-				<td class="font0-8rem">{{ user.avatar }}</td>
+				<td class="font0-8rem"><img src="{{ asset('bundles/app/images/'~user.avatar) }}" height="35" width="35"></td>
 				<td class="font0-8rem">{{ user.roles[0] }}</td>
 				<td>
 					<a href="{{ path('app_list_user_edit', {'id': user.id}) }}" class="btn btn-primary smallBtn a-btn-slide-text">

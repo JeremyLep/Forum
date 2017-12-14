@@ -21,7 +21,7 @@
 
 {% block breadcrum %}
 <div class="ibox-content mb-1 mt-1 p-10">
-	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path('app_profil', {'id': user.id}) }}"> Liste membre </a> ><a href="{{ path(app.request.get('_route'), {'id': user.id}) }}"> {{ user.id }}</a></p>
+	<p class="crumbread m-0"><a href="{{ path('app_home', {'page': 1}) }}">Home</a> > <a href="{{ path('app_profil', {'id': user.id}) }}"> {{ user.username }} </a> ><a href="{{ path(app.request.get('_route'), {'id': user.id}) }}"> edit {{ user.username }}</a></p>
 </div>
 {% endblock %}
 
@@ -52,6 +52,21 @@
 		{{ form_errors(formEditProfil.prenom) }}
 		<div class="col-sm-12">
 		  	{{ form_widget(formEditProfil.prenom, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		{{ form_label(formEditProfil.age, "Age", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+		{{ form_errors(formEditProfil.age) }}
+		<div class="col-sm-12">
+		  	{{ form_widget(formEditProfil.age, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		{{ form_label(formEditProfil.tel, "Téléphone", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+		{{ form_errors(formEditProfil.tel) }}
+		<div class="col-sm-12">
+		  	{{ form_widget(formEditProfil.tel, {'attr': {'class': 'form-control'}}) }}
+		</div>
+		{{ form_label(formEditProfil.ville, "Ville", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
+		{{ form_errors(formEditProfil.ville) }}
+		<div class="col-sm-12">
+		  	{{ form_widget(formEditProfil.ville, {'attr': {'class': 'form-control'}}) }}
 		</div>
 		{{ form_label(formEditProfil.avatar, "Avatar", {'label_attr': {'class': 'col-sm-12 control-label'}}) }}
 		{{ form_errors(formEditProfil.avatar) }}

@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use AppBundle\Entity\Discussion;
 use AppBundle\Entity\Themes;
 use UserBundle\Form\EditUserType;
@@ -402,7 +403,10 @@ class ForumController extends Controller
             ->add('email', EmailType::class, array('data' => $user->getEmail()))
             ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
             ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
-            ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+            ->add('age', TextType::class, array('data' => $user->getAge(), 'required' => false))
+            ->add('tel', TextType::class, array('data' => $user->getTel(), 'required' => false))
+            ->add('ville', TextType::class, array('data' => $user->getVille(), 'required' => false))
+            ->add('avatar', FileType::class, array('required' => false))
             ->add('submit', SubmitType::class, array(
                       'label' => 'Envoyer',
                       'attr' => array('class' => 'btn btn-primary')
@@ -418,6 +422,9 @@ class ForumController extends Controller
           $user->setEmail($formEditProfil['email']);
           $user->setNom($formEditProfil['nom']);
           $user->setPrenom($formEditProfil['prenom']);
+          $user->setAge($formEditProfil['age']);
+          $user->setTel($formEditProfil['tel']);
+          $user->setVille($formEditProfil['ville']);
           $user->setAvatar($formEditProfil['avatar']);
 
 
@@ -425,9 +432,9 @@ class ForumController extends Controller
 
           $em->flush();
 
-          $request->getSession()->getFlashBag()->add('notice', 'Le profil bien modifié.');
+          $request->getSession()->getFlashBag()->add('notice', 'Le profil à bien été modifié.');
 
-          return $this->redirectToRoute('app_profil', array(
+          return $this->redirectToRoute('app_edit_profil', array(
             'id'  => $user->getId(),
           ));
         } catch (\Exception $exc) {
@@ -491,7 +498,7 @@ class ForumController extends Controller
             ->add('email', EmailType::class, array('data' => $user->getEmail()))
             ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
             ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
-            ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+            ->add('avatar', FileType::class, array('required' => false))
             ->add('roles', ChoiceType::class, array('choices' => ["Admin" => $roleAdmin, "Moderateur" => $roleModo, "User" => $roleUser]))
             ->add('submit', SubmitType::class, array(
               'label' => 'Envoyer',
@@ -504,7 +511,7 @@ class ForumController extends Controller
             ->add('email', EmailType::class, array('data' => $user->getEmail()))
             ->add('nom', TextType::class, array('data' => $user->getNom(), 'required' => false))
             ->add('prenom', TextType::class, array('data' => $user->getPrenom(), 'required' => false))
-            ->add('avatar', TextType::class, array('data' => $user->getAvatar(), 'required' => false))
+            ->add('avatar', FileType::class, array('required' => false))
             ->add('submit', SubmitType::class, array(
                       'label' => 'Envoyer',
                       'attr' => array('class' => 'btn btn-primary')
@@ -536,7 +543,7 @@ class ForumController extends Controller
             'id'  => $user->getId(),
           ));
         } catch (\Exception $exc) {
-          $request->getSession()->getFlashBag()->add('notice', 'Le profil n\'a pas pu être modifié.');
+          $request->getSession()->getFlashBag()->add('notice', 'Le profil n\'a pas pu être modifié.'.$exc);
 
           return $this->redirectToRoute('app_list_user_edit', array(
             'id'  => $user->getId(),

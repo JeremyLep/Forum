@@ -4,12 +4,15 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User as User;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Discussion
  *
  * @ORM\Table(name="discussion")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DiscussionRepository")
+ * @UniqueEntity(fields={"contenu"}, message="Votre post est identique à un message déjà posté.")
  */
 class Discussion
 {
@@ -26,13 +29,15 @@ class Discussion
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
+     * @Assert\DateTime()
      */
     private $date;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="contenu", type="string", length=5000, nullable=false)
+     * @ORM\Column(name="contenu", type="string", length=5000, nullable=false, unique=true)
+     * @Assert\Length(min=3)
      */
     private $contenu;
 

@@ -37,7 +37,11 @@ class Themes
      * @var string
      *
      * @ORM\Column(name="sous_titre", type="string", length=500, nullable=true)
-     * @Assert\Length(min=3, max=500)
+     * @Assert\Length(
+        min=3, 
+        max=500,
+        minMessage="Trop court",
+        maxMessage="Trop long")
      */
     private $sousTitre;
 

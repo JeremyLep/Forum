@@ -53,3 +53,8 @@ app_list_user_edit:
        _controller: AppBundle:Forum:listEditUser
     requirements:
         id: '\d+'
+
+app_online_user:
+    path: /online-user
+    defaults:
+        _controller: AppBundle:Forum:onlineUser

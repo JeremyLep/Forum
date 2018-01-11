@@ -22,10 +22,17 @@ use \DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Role\Role;
 
-
-
 class ForumController extends Controller
 {
+
+
+  public function onlineUserAction()
+  {
+    $onlineUser = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->getActive();
+
+    return $this->render('AppBundle:Forum:onlineUser.html.twig', array("onlineUser" => $onlineUser));
+  }
+
   public function indexAction(Request $request, $page)
   {
     if ($page < 1) {
@@ -46,7 +53,9 @@ class ForumController extends Controller
 
     $nbDisc = $em
       ->getRepository('AppBundle:Discussion')
-      ->getNbDiscussion(); 
+      ->getNbDiscussion();
+
+    
 
     $nbPages = ceil(count($themes)/$nbPerPage);
 
@@ -79,13 +88,12 @@ class ForumController extends Controller
           return $this->redirectToRoute('app_home', array(
             'page'  => 1,
           ));
-        } catch (\Exception $exc) {
-          $request->getSession()->getFlashBag()->add('notice', 'Le thème n\'a pas pu être enregistré.');
+      } catch (\Exception $exc) {
+        $request->getSession()->getFlashBag()->add('notice', 'Le thème n\'a pas pu être enregistré.');
 
-          return $this->redirectToRoute('app_home', array(
+        return $this->redirectToRoute('app_home', array(
             'page'  => 1,
           ));
-        }
       }
     }
     

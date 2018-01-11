@@ -23,7 +23,7 @@ class User extends FosUser
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    protected $id;
+    public $id;
 
     /**
      * @var string
@@ -31,7 +31,7 @@ class User extends FosUser
      * @ORM\Column(name="nom", type="string", nullable=true)
      * @Assert\Length(min=2)
      */
-    protected $nom;
+    public $nom;
 
     /**
      * @var string
@@ -107,6 +107,13 @@ class User extends FosUser
      *
      */
     protected $discussion;
+
+    /**
+     * @var datetime
+     *
+     * @ORM\Column(name="last_activity", type="datetime", nullable=true)
+    */
+    protected $lastActivity; 
 
     public function __construct()
     {
@@ -189,6 +196,28 @@ class User extends FosUser
     }
 
     /**
+     * Get lastActivity
+     *
+     * @return \DateTime
+     */
+    public function getLastActivity()
+    {
+        return $this->lastActivity;
+    }
+
+    /**
+     * Set lastActivity
+     *
+     * @return datetime
+     */
+    public function setLastActivity()
+    {
+        $this->lastActivity = new \DateTime();
+
+        return $this;
+    }
+
+    /**
      * Get dateInscription
      *
      * @return \DateTime
@@ -227,7 +256,7 @@ class User extends FosUser
      *
      * @param string $tel
      *
-     * @return User
+     * @return string
      */
     public function setTel($tel)
     {

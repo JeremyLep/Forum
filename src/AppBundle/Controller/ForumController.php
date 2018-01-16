@@ -95,6 +95,7 @@ class ForumController extends Controller
             'page'  => 1,
           ));
       }
+    }
     
     return $this->render('AppBundle:Forum:index.html.twig', array(
       'themes'      => $themes,
